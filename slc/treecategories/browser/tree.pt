@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:tal="http://xml.zope.org/namespaces/tal" xmlns:metal="http://xml.zope.org/namespaces/metal" xmlns:i18n="http://xml.zope.org/namespaces/i18n" i18n:domain="slc.treecategories">
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <metal:view_macro define-macro="view" tal:define="kssClassesView context/@@kss_field_decorator_view;
+ getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;">
+            <span metal:define-macro="inner-view" tal:define="vocab python:field.Vocabulary(here);
+ value python:accessor();
+ display python:here.displayValue(vocab,  value);
+ class python:getKssClasses(fieldName,  templateId='at_widget_tree',  macro='inner-view');"
+ tal:attributes="class class;id string:parent-fieldname-$fieldName">
+                <metal:slot metal:define-slot="inside">
+                    <tal:block tal:condition="python:hasattr(field, 'relationship')">
+                        <tal:block tal:define="targets python:here.getRefs(field.relationship)" tal:condition="targets">
+                            <a href="#" tal:define="obj python:targets[0]" tal:condition="not:field/multiValued" tal:attributes="href obj/absolute_url; class python:obj.portal_type.replace(' ', '_')" tal:content="python:obj.Title() or obj.absolute_url(relative=1)">Sole target object's title</a>
+                            <ul tal:condition="field/multiValued">
+                                <li tal:repeat="obj targets">
+                                    <a href="#" tal:attributes="href obj/absolute_url; class python:obj.portal_type.replace(' ', '_')" tal:content="python:obj.Title() or obj.absolute_url(relative=1)">Target Title</a>
+                                </li>
+                            </ul>
+                        </tal:block>
+                    </tal:block>
+                    <span tal:condition="not:python:hasattr(field, 'relationship')" ><tal:block tal:replace="structure display" /></span>
+                </metal:slot>
+            </span>
+        </metal:view_macro>
+        <metal:define define-macro="edit">
+            <metal:use use-macro="field_macro | here/widgets/field/macros/edit">
+                <metal:fill fill-slot="widget_body" tal:define="vocab python:field.Vocabulary(here);
+ selectionview context/@@at_selection_widget;
+ selection python:selectionview.getSelected(vocab,  value);">
+                    <script type='text/javascript'>
+                    	tree_init();
+						tree_init();
+                    </script>
+                    <input type="hidden" tal:attributes="id string:${fieldName}_vocabulary_url;
+ value string:portal_vocabularies/${field/vocabulary/vocab_name}" /><span i18n:translate="">Search:</span>
+                    <input type="text" tal:attributes="id string:${fieldName}_filter" class="treefilter" />
+                    <div class="tree_left">
+                        <span i18n:translate="">Possible Values</span>
+                        <div tal:attributes="id string:${fieldName}_can_have" class="tree_can_have">
+                            If you see this, slc.treeoptions is not properly configured
+                        </div>
+                    </div>
+                    <div class="tree_right">
+                        <span i18n:translate="">Selected Values</span>
+                        <div tal:attributes="id string:${fieldName}_has" class="tree_has">
+                            If you see this, slc.treeoptions is not properly configured
+                        </div>
+                    </div>
+                    <input type="hidden" value="" tal:condition="not:field/required|nothing" tal:attributes="name string:$fieldName:default:list;" />
+                    <div style="display:none">
+                        <span class="tree_wait" i18n:translate="">Loading...</span>
+                        <span class="tree_error" i18n:translate="">Load Error!</span>
+                        <select class="tree_values" multiple="multiple" tal:attributes="name string:${fieldName}:list;
+ id string:${fieldName};
+ size widget/size;">
+                            <tal:block tal:repeat="single_value selection">
+                                <option tal:attributes="value single_value;" tal:content="python:vocab.getValue(single_value)" selected="true" i18n:translate="">option</option>
+                            </tal:block>
+                        </select>
+                    </div>
+                    <div style="clear: both;"/>
+                </metal:fill>
+            </metal:use>
+        </metal:define>
+        <div metal:define-macro="search">
+            <div metal:use-macro="here/widgets/multiselection/macros/edit">
+            </div>
+        </div>
+    </body>
+</html>

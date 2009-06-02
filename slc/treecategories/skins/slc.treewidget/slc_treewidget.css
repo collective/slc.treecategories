@@ -1,0 +1,25 @@
+.ArchetypesTreeWidget .ui-dynatree-icon {
+	background-image: none;
+	margin: 0;
+	width: 0;
+}
+
+.ArchetypesTreeWidget .ui-dynatree-container {
+	border: 0;
+}
+
+.ArchetypesTreeWidget .tree_left {
+	display: inline;
+	float: left;
+	width: 40%;
+}
+
+.ArchetypesTreeWidget .tree_right {
+	display: inline;
+	float: left;
+	width: 40%;
+}
+
+.ArchetypesTreeWidget span.ui-dynatree-document a {
+	white-space: normal;
+}

@@ -1,0 +1,16 @@
+<object name="portal_skins">
+    <object name="slc.treewidget" 
+			meta_type="Filesystem Directory View"
+     		directory="slc.treewidget:skins/slc.treewidget"/>
+
+    <object name="jquery.dynatree" 
+			meta_type="Filesystem Directory View"
+     		directory="slc.treewidget:skins/jquery.dynatree"/>
+
+	<skin-path name="*">
+		<layer name="slc.treewidget" insert-after="custom" />
+	</skin-path>
+	<skin-path name="*">
+		<layer name="jquery.dynatree" insert-after="slc.treewidget" />
+	</skin-path>
+</object>

@@ -1,0 +1,23 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five"
+           xmlns:zcml="http://namespaces.zope.org/zcml">
+
+
+    <browser:page
+        for="Products.Archetypes.interfaces.IVocabulary"
+        name="json"
+        class=".browser.Json"
+        permission="zope2.View"
+        />
+
+    <browser:page
+        for="Products.ATContentTypes.content.base.ATCTContent"
+        name="at_widget_tree"
+        template="tree.pt"
+        permission="zope.Public"
+        class=".browser.TreeMacros"
+        />
+
+</configure>
+
