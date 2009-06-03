@@ -31,8 +31,9 @@
  selectionview context/@@at_selection_widget;
  selection python:selectionview.getSelected(vocab,  value);">
                     <script type='text/javascript'>
-                    	tree_init();
-						tree_init();
+						jq(document).ready(function() {
+    	                	tree_init();
+						})
                     </script>
                     <input type="hidden" tal:attributes="id string:${fieldName}_vocabulary_url;
  value string:portal_vocabularies/${field/vocabulary/vocab_name}" /><span i18n:translate="">Search:</span>

@@ -14,6 +14,8 @@
 				insert-after="++resource++jquery.ui/ui/ui.core.js" />
    	<javascript cacheable="True" compression="True" cookable="True"
         enabled="True" inline="False" expression=""
+		insert-before="jquery-integration.js"
+		insert-after="jquery.dynatree.min.js"
               	id="tree.js"/>
 </object>
 
