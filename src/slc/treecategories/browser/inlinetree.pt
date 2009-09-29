@@ -1,0 +1,51 @@
+<metal:view_macro define-macro="view" tal:define="field field|view/field;
+ vocab python:field.Vocabulary(here);
+ value accessor|view/items;
+ fieldName fieldName|view/fieldName;
+ widget nocall:widget|view/widget;
+ portal nocall:portal|view/portal;
+ mode nocall:mode|string:edit;
+ display python:here.displayValue(vocab,  value);
+ errors nocall:errors|view/errors;
+ baseid string:${fieldName}_${context/id};">
+    <metal:use use-macro="field_macro | here/widgets/field/macros/edit">
+        <span metal:fill-slot="widget_body" 
+ tal:attributes="id string:parent-fieldname-$fieldName">
+            <script type="text/javascript">
+                jq(document).ready(function(){
+                    inline_tree_init();
+                })
+            </script>
+			<div>
+            <ul class="inline_tree" tal:attributes="id baseid">
+                <li>
+                    <img src="add_icon.gif" title="Click here to add an item" class="inlinetree_activator" tal:attributes="id string:${baseid}_activator" />
+                </li><li tal:repeat="item value" tal:attributes="id string:liid_${baseid}${item}">
+                    <img src="delete_icon.gif" title="Click here to delete" class="remove" tal:attributes="class string:remove ${baseid}_remove" /><span tal:replace="python: here.displayValue(vocab, item)">item</span>
+                </li>
+            </ul>
+			<div style="clear:both;"> </div>
+			</div>
+            <div style="display:none">
+                <span class="tree_wait" i18n:translate="">Loading...</span>
+                <span class="tree_error" i18n:translate="">Load Error!</span>
+                <input type="hidden" tal:attributes="id string:${baseid}_fieldName;value fieldName" /><input type="hidden" tal:attributes="id string:${baseid}_vocabulary_url;
+ value string:portal_vocabularies/${field/vocabulary/vocab_name}" /><input type="hidden" tal:attributes="id string:${baseid}_ajax_url;
+ value string: ${context/absolute_url}/at_widget_inlinetree" />
+            </div>
+            <div style="display:None" tal:attributes="id string:${baseid}_inlinetree" class="tree">
+                If you see this, slc.treecategories is not properly configured
+            </div>
+        </span>
+    </metal:use>
+</metal:view_macro>
+<tal:ignore tal:condition="nothing">
+    <metal:define define-macro="edit">
+        <div metal:use-macro="here/at_widget_inlinetree/macros/view">
+        </div>
+    </metal:define>
+    <metal:define metal:define-macro="search">
+        <div metal:use-macro="here/at_widget_inlinetree/macros/view">
+        </div>
+    </metal:define>
+</tal:ignore>

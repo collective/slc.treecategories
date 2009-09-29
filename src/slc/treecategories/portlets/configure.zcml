@@ -1,0 +1,13 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+ xmlns:plone="http://namespaces.plone.org/plone">
+    <include package="plone.app.portlets" />
+    <plone:portlet
+     name="slc.treecategories.portlet"
+     interface=".tree_portlet.ITreeCategoriesPortlet"
+     assignment=".tree_portlet.Assignment"
+     renderer=".tree_portlet.Renderer"
+     addview=".tree_portlet.AddForm"
+     editview=".tree_portlet.EditForm"
+    />
+</configure>
+

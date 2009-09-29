@@ -1,0 +1,125 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:i18n="http://xml.zope.org/namespaces/i18n" xmlns:tal="http://xml.zope.org/namespaces/tal" xmlns:metal="http://xml.zope.org/namespaces/metal" xml:lang="en" lang="en" i18n:domain="plone" metal:use-macro="here/main_template/macros/master">
+    <head>
+        <metal:block fill-slot="top_slot">
+            <tal:insert tal:replace="nothing" tal:define="dummy python:request.set('enable_border', 1)" />
+        </metal:block>
+    </head>
+    <body>
+        <div metal:fill-slot="main">
+            <div tal:replace="structure provider:plone.abovecontenttitle" /><h1 class="documentFirstHeading">
+                <tal:block condition="exists:here/widget">
+                    <metal:field use-macro="python:here.widget('title', mode='view')">
+                        Title
+                    </metal:field>
+                </tal:block>
+                <tal:block condition="not:exists:here/widget">
+                    <span tal:content="view/title" tal:omit-tag="">Directory Id</span>
+                </tal:block>
+            </h1>
+            <div tal:replace="structure provider:plone.belowcontenttitle" />
+            <p class="documentDescription" tal:condition="exists:here/widget">
+                <metal:field use-macro="python:here.widget('description', mode='view')">
+                    Description
+                </metal:field>
+            </p>
+            <tal:block condition="not:exists:here/widget">
+                <p class="documentDescription" tal:content="context/Description" tal:condition="context/Description">
+                    Description
+                </p>
+            </tal:block>
+            <form class="categorizerForm" name="categorizerForm" method="post" action="folder_object" tal:attributes="action context/absolute_url" class="kssattr-serveraction-foldercontents_update_table">
+                <dl class="warning">
+                    <dt i18n:translate="" class="unsaved" style="display:none;">
+                        Changes not yet saved!
+                    </dt>
+                </dl>
+                <div class="item" tal:repeat="item view/items">
+                    <input class="checkbox" type="checkbox" name="ids:list" tal:attributes="value item/id" /><h2><a tal:content="item/title" href="link" tal:attributes="href item/id">A Title</a></h2>
+                    <div tal:content="item/description">
+                        A Description
+                    </div>
+                    <div tal:attributes="class string:category ${category/name}" tal:repeat="category item/categories">
+                        <h3 tal:content="category/name">Category name</h3>
+                        <ul>
+                            <li tal:repeat="category_item category/data" tal:attributes="id category_item/key" tal:content="category_item/value">
+                                Some Category Name
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <dl class="warning">
+                    <dt i18n:translate="" class="unsaved" style="display:none;">
+                        Changes not yet saved!
+                    </dt>
+                </dl>
+                <input tal:replace="structure context/@@authenticator/authenticator" />
+            </form>
+            <script type="text/javascript">
+                function elementsFromList(list, element_name){
+                    return jq(list).children('li:contains(' + element_name + ')').filter(function(){
+                        return element_name.length == jq(this).html().length
+                    })
+                    return jq.makeArray()
+                }
+                
+                jq('.item').droppable({
+                    drop: function(event, ui){
+                        var vocabulary_name = ui.draggable.parents('div.tree')[0].id.split('_')[0]
+                        var new_category = ui.draggable.parent()[0].id.split('-')[3]
+                        var category_name = ui.draggable.text()
+						alert('.category.' + vocabulary_name + ' ul')
+						var category_list_to_change = jq('.category.' + vocabulary_name + ' ul').filter(function(){
+							alert('bla' + elementsFromList(this, category_name).length)
+							return elementsFromList(this, category_name).length == 0
+						})
+                        jq('.unsaved').show()
+						alert(category_list_to_change.length)
+						category_list_to_change.append('<' + 'li id="' + new_category + '">' + category_name + '<' + '/' + 'li>')
+                        jq.ajax({
+                            url: document.URL,
+                            data: {
+                                change_categories: "True",
+                                "added_category": new_category,
+                                "ids:list": jq.map(jq('.categorizerForm :checkbox:checked'), function(data, i){
+                                    return data.value
+                                }),
+                                "vocabulary_name": vocabulary_name
+                            },
+                            success: function(){
+                                jq('.unsaved').hide()
+                            },
+                            error: function(request, msg, error_type){
+                                jq('.unsaved').hide()
+                                jq('.categorizerForm :checkbox:checked').each(function(){
+                                    category_list_to_change.children('ul').each(function(){
+                                        elementsFromList(this, category_name).each(function(){
+                                            jq(this).remove()
+                                        })
+                                    })
+                                })
+                            }
+                        })
+                    },
+                    over: function(event, ui){
+                        var droppable_unselected = !jq(this).children('.checkbox:checked').length
+                        if (droppable_unselected) {
+                            jq(this).toggleClass('error')
+                            ui.draggable.each(function(){
+                                this.toggleHighlight()
+                            })
+                        }
+                    },
+                    out: function(event, ui){
+                        var droppable_unselected = !jq(this).children('.checkbox:checked').length
+                        if (droppable_unselected) {
+                            jq(this).toggleClass('error')
+                            ui.draggable.each(function(){
+                                this.toggleHighlight()
+                            })
+                        }
+                    },
+                })
+            </script>
+        </div>
+    </body>
+</html>

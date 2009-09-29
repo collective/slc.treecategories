@@ -1,0 +1,15 @@
+<div class="portlet treecategories_portlet" i18n:domain="slc.treecategories">
+    <span style="display:none"><span class="tree_wait" i18n:translate="">Loading...</span><span class="tree_error" i18n:translate="">Load Error!</span><span class="tree_portlet_category" tal:attributes="id view/name"></span><input type="hidden" tal:attributes="id string:${view/name}_vocabulary_url;
+ value string:portal_vocabularies/${view/name}" /></span>
+    <div class="portletHeader" tal:content="view/title">
+        Title
+    </div>
+    <div tal:attributes="id string:${view/name}_tree" class="tree portletItem">
+        If you see this, slc.treeoptions is not properly configured
+    </div>
+    <script type='text/javascript'>
+        jq(document).ready(function(){
+            portlet_tree_init();
+        })
+    </script>
+</div>
