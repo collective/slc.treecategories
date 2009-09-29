@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.2dev'
+version = '0.1'
 
 setup(name='slc.treecategories',
       version=version,
@@ -20,7 +20,8 @@ setup(name='slc.treecategories',
       author_email='gerken@syslab.com',
       url='http://www.syslab.com',
       license='GPL',
-      packages=find_packages(exclude=['ez_setup']),
+      packages=['slc', 'slc/treecategories'],
+      package_dir={'' : 'src'},
       namespace_packages=['slc'],
       include_package_data=True,
       zip_safe=False,
@@ -32,6 +33,7 @@ setup(name='slc.treecategories',
           'Products.ATVocabularyManager'
           # -*- Extra requirements: -*-
       ],
+      extras_require=dict(test=['slc.treecategoriesexample']),
       entry_points="""
       # -*- Entry points: -*-
 
