@@ -1,10 +1,10 @@
 Changelog
 =========
 
-0.0.2 (unreleased)
+0.0.2 (2009-10-20)
 ------------------
 
-- Nothing changed yet.
+- Javascript code fixed (gerken)
 
 
 0.1 (2009-09-29)
