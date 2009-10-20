@@ -26,13 +26,13 @@ function inline_tree_init(){
     }
     
     function getCategories(){
-    	return this._objects
+        return this._objects
     }
     function addCategory(category){
-    	this._objects = jq.merge(this._objects, jq.makeArray(category))
+        this._objects = jq.merge(this._objects, jq.makeArray(category))
     }
     function resetCategories(){
-    	this._objects = jq.makeArray()
+        this._objects = jq.makeArray()
     }
     
     
@@ -67,8 +67,8 @@ function inline_tree_init(){
              * successfully, remove the category from the view
              */
             list.children().children('img').filter(function(){
-            	className = this.className
-            	return className.substring(className.length - 'remove'.length) == 'remove'
+                className = this.className
+                return className.substring(className.length - 'remove'.length) == 'remove'
             }).each(function(){
             jq(this).click(function(){
                 var item_to_remove = this
@@ -77,7 +77,7 @@ function inline_tree_init(){
                 if (!jq.map(inline_tree_this.getCategories(), function(object){
                     return object.field
                 }).contains(base_id)) {
-                	inline_tree_this.addCategory({
+                    inline_tree_this.addCategory({
                         ajax_url: jq_('ajax_url').val(),
                         field: fieldName,
                         list: data_field,
@@ -96,9 +96,6 @@ function inline_tree_init(){
             persist: false,
             initAjax: {
                 url: jq_('vocabulary_url').val() + '/json',
-                /* As soon as the tree got loaded, iterate through the options
-                 * and select the ones that should be selected
-                 */
                 success: function(reload, isError){
                     jq('#' + base_id + ' li').each(function(){
                         var id = this.id.substring(5 + base_id.length)
@@ -107,18 +104,14 @@ function inline_tree_init(){
                         }
                     })
                     self['initialised_' + base_id] = true
-                },
+                }
             },
-            /* On Selection, submit a request to add this category in the
-             * backend, after this happened successfully, add the category in
-             * the view.
-             */
             onSelect: function(flag, dtnode){
                 if (!self['initialised_' + base_id] == true) {
                     return;
                 }
                 if (flag) {
-                    var id = dtnode.data.key
+                    var id = dtnode.data.key;
                     addItems(inline_tree_this.getCategories(), id, function(data, list, base_id){
                         jq(list.children()[0]).after('<li id="liid_' +
                         base_id +
@@ -127,13 +120,13 @@ function inline_tree_init(){
                         base_id +
                         '_remove" />' +
                         data +
-                        '</li>')
-                        loadRemoveButtons(list, base_id)
+                        '</li>');
+                        loadRemoveButtons(list, base_id);
                     });
                 }
                 else {
                     removeItems(inline_tree_this.getCategories(), dtnode.data.key, function(data, list, base_id){
-                        jq(('#liid_' + base_id + dtnode.data.key).replace(/\./g, '\\.')).remove()
+                        jq(('#liid_' + base_id + dtnode.data.key).replace(/\./g, '\\.')).remove();
                     })
                 }
             },
@@ -144,34 +137,34 @@ function inline_tree_init(){
             strings: {
                 loading: jq(".tree_wait").text(),
                 loadError: jq(".tree_error").text()
-            },
+            }
         });
-        loadRemoveButtons(data_field, base_id)
-        function resetActivatorButtons(func){
+        loadRemoveButtons(data_field, base_id);
+        function resetActivatorButtons(func) {
             return function(){
-                var activator = this
+                var activator = this;
                 jq(".tree").each(function(){
                     if (this == activator) {
                     }
                     else {
-                        jq(this).hide()
+                        jq(this).hide();
                     }
-                })
-                func()
+                });
+                func();
             }
         }
         jq_("activator").toggle(resetActivatorButtons(function(){
-        	inline_tree_this.resetCategories()
-        	inline_tree_this.addCategory({
+            inline_tree_this.resetCategories();
+            inline_tree_this.addCategory({
                 ajax_url: jq_('ajax_url').val(),
                 field: fieldName,
                 list: data_field,
                 base_id : base_id
-            })
-            jq_('inlinetree').show()
+            });
+            jq_('inlinetree').show();
         }), resetActivatorButtons(function(){
-        	inline_tree_this.resetCategories()
-            jq_('inlinetree').hide()
+            inline_tree_this.resetCategories();
+            jq_('inlinetree').hide();
         }))
     })
 }
@@ -183,25 +176,25 @@ function portlet_tree_init(){
     self.tree_portlet_initialised = true;
     
     jq('.tree_portlet_category').each(function(item){
-        var base_id = this.id
-        var fx = this.fx
+        var base_id = this.id;
+        var fx = this.fx;
         if (!fx) {
             fx = {
                 height: "toggle",
                 duration: 200
             }
         };
-        data_field = jq(this)
+        data_field = jq(this);
         function jq_(suffix){
             // find an object with the current base id and the specified suffix.
-            return jq("#" + base_id + '_' + suffix)
+            return jq("#" + base_id + '_' + suffix);
         }
         function toggleHighlight(element){
-            var category = element.parents('.tree')[0].id.split('_')[0]
+            var category = element.parents('.tree')[0].id.split('_')[0];
             jq('.categorizerForm .category.' + category).filter(function(){
                 return jq(this).parent().children('input:checked').length
             }).each(function(){
-                jq(this).parent().toggleClass('error')
+                jq(this).parent().toggleClass('error');
             })
             
         }
@@ -220,7 +213,7 @@ function portlet_tree_init(){
                 },
                 stop: function(event, ui){
                     toggleHighlight(ui.helper)
-                },
+                }
             })
         }
         jq_("tree").dynatree({
@@ -240,7 +233,7 @@ function portlet_tree_init(){
             strings: {
                 loading: jq(".tree_wait").text(),
                 loadError: jq(".tree_error").text()
-            },
+            }
         });
     })
     
@@ -320,7 +313,7 @@ function tree_init(){
                 strings: {
                     loading: jq(".tree_wait").text(),
                     loadError: jq(".tree_error").text()
-                },
+                }
             });
             jq_("has").dynatree({
                 onActivate: function(dtnode){
@@ -338,7 +331,7 @@ function tree_init(){
                 strings: {
                     loading: jq(".tree_wait").text(),
                     loadError: jq(".tree_error").text()
-                },
+                }
             });
         }
         function updateTree(event){
@@ -376,3 +369,4 @@ function tree_init(){
     });
     
 };
+
