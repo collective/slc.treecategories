@@ -67,7 +67,9 @@ class Json(object):
         if input_dict == None:
             return None
         retval = []
-        for key, (title, children) in input_dict.items():
+        input_list = input_dict.items()
+        input_list.sort(lambda a, b:cmp(a[1][0], b[1][0]))
+        for key, (title, children) in input_list:
             # if we inverted the key limiter, we dont want a node to appear if he
             # is filtered, even if he has children!
             if invert_key_limiter and not keyFilter(key):
