@@ -1,6 +1,6 @@
 <metal:view_macro define-macro="view" tal:define="field field|view/field;
  vocab python:field.Vocabulary(here);
- values python:view.items;
+ values accessor|view/items;
  fieldName fieldName|view/fieldName;
  widget nocall:widget|view/widget;
  portal nocall:portal|view/portal;
