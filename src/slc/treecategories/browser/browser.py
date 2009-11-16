@@ -5,7 +5,9 @@ from zope.app.pagetemplate.simpleviewclass import simple
 from Products.Archetypes.Field import LinesField
 from Products.Archetypes.interfaces import ISchema
 from zope.app.container.interfaces import IContainer
-from slc.treecategories.config import SHOW_IDS_IN_TREE
+from slc.treecategories.interfaces import IVocabularyInfo
+from zope.component import queryAdapter
+from zope.interface import implements
 #Not everything must be pluggable...
 
 class CustomKeyError(KeyError):
@@ -13,6 +15,14 @@ class CustomKeyError(KeyError):
     Just for not returning a 503
     """
     pass
+
+class GenericVocabularyInfo(object):
+    implements(IVocabularyInfo)
+
+    def __init__(self, *args, **kw):
+        pass
+
+    display_ids = False
 
 class Json(object):
     """Simple view that returns a special formatted json representation
@@ -53,13 +63,18 @@ class Json(object):
             expanded = True
 
         data = self.vocabulary.getVocabularyDict(None)
+        adapter = queryAdapter(self, name=self.vocabulary.__name__)
+        if not adapter:
+            adapter = queryAdapter(self, name='generic')
+        display_ids = adapter.display_ids
 
         return JSONWriter().write(self._convert(data, keyFilter,
                                                 fullTextFilter, expanded,
-                                                invert_key_limiter))
+                                                invert_key_limiter,
+                                                display_ids))
 
     def _convert(self, input_dict, keyFilter, fullTextFilter,
-                  expanded=False, invert_key_limiter=False):
+                  expanded=False, invert_key_limiter=False, display_ids=False):
         """Recursively parse the dictionary as we get it from the
            IVocabulary, and transform it to a a dictionary as needed for
            dynatree
@@ -75,13 +90,13 @@ class Json(object):
             # is filtered, even if he has children!
             if invert_key_limiter and not keyFilter(key):
                 continue
-            children = self._convert(children, keyFilter, fullTextFilter, expanded, invert_key_limiter)
+            children = self._convert(children, keyFilter, fullTextFilter, expanded, invert_key_limiter, display_ids)
             if not children and not keyFilter(key):
                 continue
             if not children and not fullTextFilter(title):
                 continue
             new_item = {}
-            if SHOW_IDS_IN_TREE:
+            if display_ids:
                 title = '%s (%s)' % (title, key)
             else:
                 title = title

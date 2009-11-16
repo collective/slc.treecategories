@@ -35,5 +35,12 @@
 		class=".browser.MassCategorizer"
 		/>
 
+
+    <adapter
+        for="slc.treecategories.browser.browser.Json"
+        name="generic"
+        factory=".browser.GenericVocabularyInfo"
+        />
+
 </configure>
 
