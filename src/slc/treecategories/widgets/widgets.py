@@ -2,6 +2,7 @@ from Products.Archetypes import Widget
 from Products.Archetypes.Registry import registerWidget
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from Products.ZCatalog.CatalogBrains import AbstractCatalogBrain
 from slc.treecategories.interfaces import IInlineTreeView
 from zope.component import getMultiAdapter
 from zope.interface import implements
@@ -31,22 +32,26 @@ registerWidget(InlineTreeWidget,
                used_for=('Products.Archetypes.Field.LinesField',)
                )
 
-def getInlineTreeView(context, request, field):
+def getInlineTreeView(context, brain, request, field):
     retval = getMultiAdapter((context, request), name='slc.treecategories.inlinetreeview')
+    retval.brain = brain
+    retval.context_url = brain.getURL()
     retval._field = field
     return retval
 
 class InlineTreeView(BrowserView):
     implements(IInlineTreeView)
 
-    _field = None
+    @property
+    def items(self):
+        try:
+            return self.field.get(self.brain)
+        except AttributeError:
+            return ("Field '%s' not in brain" % self.field.__name__, )
+
     @property
     def field(self):
         return self._field
-
-    @property
-    def items(self):
-        return self.field.get(self.context)
 
     @property
     def fieldName(self):

@@ -3,7 +3,7 @@
  xmlns:five="http://namespaces.zope.org/five">
     
     <browser:page
-     for="Products.ATContentTypes.content.base.ATCTContent"
+     for="Products.ATContentTypes.content.folder.ATFolder"
      name="slc.treecategories.inlinetreeview"
      class=".widgets.InlineTreeView"
      permission="zope2.Public"/>

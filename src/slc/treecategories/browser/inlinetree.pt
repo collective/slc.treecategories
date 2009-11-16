@@ -7,7 +7,9 @@
  mode nocall:mode|string:edit;
  display python:here.displayValue(vocab,  value);
  errors nocall:errors|view/errors;
- baseid string:${fieldName}_${context/id};">
+ immed_id view/brain/id|contex/id;
+ context_url view/context_url|context/absolute_url;
+ baseid string:${fieldName}_${immed_id};">
     <metal:use use-macro="field_macro | here/widgets/field/macros/edit">
         <span metal:fill-slot="widget_body" 
  tal:attributes="id string:parent-fieldname-$fieldName">
@@ -31,7 +33,7 @@
                 <span class="tree_error" i18n:translate="">Load Error!</span>
                 <input type="hidden" tal:attributes="id string:${baseid}_fieldName;value fieldName" /><input type="hidden" tal:attributes="id string:${baseid}_vocabulary_url;
  value string:portal_vocabularies/${field/vocabulary/vocab_name}" /><input type="hidden" tal:attributes="id string:${baseid}_ajax_url;
- value string: ${context/absolute_url}/at_widget_inlinetree" />
+ value string: ${context_url}/at_widget_inlinetree" />
             </div>
             <div style="display:None" tal:attributes="id string:${baseid}_inlinetree" class="tree">
                 If you see this, slc.treecategories is not properly configured

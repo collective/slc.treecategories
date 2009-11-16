@@ -3,17 +3,21 @@ function inline_tree_init(){
         return
     }
     self.inline_tree_initialised = true;
+
+    // Javascript function for really adding a selected category to an object
     function addItems(objects, id, func){
-        jq.map(objects, function(object){
-            jq.post(object.ajax_url, {
+        jq.map(objects, function(o){
+            jq.post(o.ajax_url, {
                 add: id,
-                field: object.field
+                field: o.field
             }, function(data){
-                return func(data, object.list, object.base_id)
+                return func(data, o.list, o.base_id)
             })
         })
     }
     
+    // Javascript function for really removing an unselected category from an
+    // object
     function removeItems(objects, id, func){
         jq.map(objects, function(object){
             jq.post(object.ajax_url, {
@@ -24,7 +28,8 @@ function inline_tree_init(){
             })
         })
     }
-    
+
+    // Category management, can be overwritten
     function getCategories(){
         return this._objects
     }
@@ -92,53 +97,6 @@ function inline_tree_init(){
         }
         
         /* Build the tree */
-        jq_("inlinetree").dynatree({
-            persist: false,
-            initAjax: {
-                url: jq_('vocabulary_url').val() + '/json',
-                success: function(reload, isError){
-                    jq('#' + base_id + ' li').each(function(){
-                        var id = this.id.substring(5 + base_id.length)
-                        if (id) {
-                            jq_('inlinetree').dynatree('getTree').selectKey(id, true).makeVisible()
-                        }
-                    })
-                    self['initialised_' + base_id] = true
-                }
-            },
-            onSelect: function(flag, dtnode){
-                if (!self['initialised_' + base_id] == true) {
-                    return;
-                }
-                if (flag) {
-                    var id = dtnode.data.key;
-                    addItems(inline_tree_this.getCategories(), id, function(data, list, base_id){
-                        jq(list.children()[0]).after('<li id="liid_' +
-                        base_id +
-                        id +
-                        '"><img src="delete_icon.gif" title="Click here to delete" class="remove ' +
-                        base_id +
-                        '_remove" />' +
-                        data +
-                        '</li>');
-                        loadRemoveButtons(list, base_id);
-                    });
-                }
-                else {
-                    removeItems(inline_tree_this.getCategories(), dtnode.data.key, function(data, list, base_id){
-                        jq(('#liid_' + base_id + dtnode.data.key).replace(/\./g, '\\.')).remove();
-                    })
-                }
-            },
-            idPrefix: id_prefix,
-            fx: fx,
-            debugLevel: 0,
-            checkbox: true,
-            strings: {
-                loading: jq(".tree_wait").text(),
-                loadError: jq(".tree_error").text()
-            }
-        });
         loadRemoveButtons(data_field, base_id);
         function resetActivatorButtons(func) {
             return function(){
@@ -154,7 +112,55 @@ function inline_tree_init(){
             }
         }
         jq_("activator").toggle(resetActivatorButtons(function(){
-            inline_tree_this.resetCategories();
+            jq_("inlinetree").dynatree({
+                persist: false,
+                initAjax: {
+                    url: jq_('vocabulary_url').val() + '/json',
+                    data:{'_':'1'},
+                    success: function(reload, isError){
+                        jq('#' + base_id + ' li').each(function(){
+                            var id = this.id.substring(5 + base_id.length)
+                            if (id) {
+                                jq_('inlinetree').dynatree('getTree').selectKey(id, true).makeVisible()
+                            }
+                        })
+                        self['initialised_' + base_id] = true
+                    }
+                },
+                onSelect: function(flag, dtnode){
+                    if (!self['initialised_' + base_id] == true) {
+                        return;
+                    }
+                    if (flag) {
+                        var id = dtnode.data.key;
+                        addItems(inline_tree_this.getCategories(), id, function(data, list, base_id){
+                            jq(list.children()[0]).after('<li id="liid_' +
+                            base_id +
+                            id +
+                            '"><img src="delete_icon.gif" title="Click here to delete" class="remove ' +
+                            base_id +
+                            '_remove" />' +
+                            data +
+                            '</li>');
+                            loadRemoveButtons(list, base_id);
+                        });
+                    }
+                    else {
+                        removeItems(inline_tree_this.getCategories(), dtnode.data.key, function(data, list, base_id){
+                            jq(('#liid_' + base_id + dtnode.data.key).replace(/\./g, '\\.')).remove();
+                        })
+                    }
+                },
+                idPrefix: id_prefix,
+                fx: fx,
+                debugLevel: 0,
+                checkbox: true,
+                strings: {
+                    loading: jq(".tree_wait").text(),
+                    loadError: jq(".tree_error").text()
+                }
+            });
+           inline_tree_this.resetCategories();
             inline_tree_this.addCategory({
                 ajax_url: jq_('ajax_url').val(),
                 field: fieldName,
