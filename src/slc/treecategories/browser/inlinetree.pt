@@ -1,11 +1,10 @@
 <metal:view_macro define-macro="view" tal:define="field field|view/field;
  vocab python:field.Vocabulary(here);
- value accessor|view/items;
+ values python:view.items;
  fieldName fieldName|view/fieldName;
  widget nocall:widget|view/widget;
  portal nocall:portal|view/portal;
  mode nocall:mode|string:edit;
- display python:here.displayValue(vocab,  value);
  errors nocall:errors|view/errors;
  immed_id view/brain/id|context/id;
  context_url view/context_url|context/absolute_url;
@@ -22,7 +21,7 @@
             <ul class="inline_tree" tal:attributes="id baseid">
                 <li>
                     <img src="add_icon.gif" title="Click here to add an item" class="inlinetree_activator" tal:attributes="id string:${baseid}_activator" />
-                </li><li tal:repeat="item value" tal:attributes="id string:liid_${baseid}${item}">
+                </li><li tal:repeat="item values" tal:attributes="id string:liid_${baseid}${item}">
                     <img src="delete_icon.gif" title="Click here to delete" class="remove" tal:attributes="class string:remove ${baseid}_remove" /><span tal:replace="python: here.displayValue(vocab, item)">item</span>
                 </li>
             </ul>

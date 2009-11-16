@@ -35,6 +35,8 @@ registerWidget(InlineTreeWidget,
 def getInlineTreeView(context, brain, request, field):
     retval = getMultiAdapter((context, request), name='slc.treecategories.inlinetreeview')
     retval.brain = brain
+    #Oh man, could have kept the code as it was...
+    retval.realob = brain.getObject()
     retval.context_url = brain.getURL()
     retval._field = field
     return retval
@@ -45,7 +47,7 @@ class InlineTreeView(BrowserView):
     @property
     def items(self):
         try:
-            return self.field.get(self.brain)
+            return self.field.get(self.realob)
         except AttributeError:
             return ("Field '%s' not in brain" % self.field.__name__, )
 
