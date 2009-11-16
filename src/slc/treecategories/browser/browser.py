@@ -5,6 +5,7 @@ from zope.app.pagetemplate.simpleviewclass import simple
 from Products.Archetypes.Field import LinesField
 from Products.Archetypes.interfaces import ISchema
 from zope.app.container.interfaces import IContainer
+from slc.treecategories.config import SHOW_IDS_IN_TREE
 #Not everything must be pluggable...
 
 class CustomKeyError(KeyError):
@@ -80,6 +81,10 @@ class Json(object):
             if not children and not fullTextFilter(title):
                 continue
             new_item = {}
+            if SHOW_IDS_IN_TREE:
+                title = '%s (%s)' % (title, key)
+            else:
+                title = title
             new_item['title'] = title
             new_item['key'] = key
             new_item['children'] = children
