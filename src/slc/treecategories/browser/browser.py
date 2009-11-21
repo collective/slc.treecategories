@@ -122,7 +122,8 @@ class InlineTree(BrowserView):
         if add or remove:
             _f = ISchema(self.context)[field]
             values = list(_f.get(self.context))
-            setter = lambda x: _f.set(self.context, x)
+            #setter = lambda x: _f.set(self.context, x)
+            setter = _f.getMutator(self.context)
             controller = None
             displayList = None
             try:
