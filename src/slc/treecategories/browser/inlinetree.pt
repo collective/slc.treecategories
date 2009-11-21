@@ -1,16 +1,19 @@
-<metal:view_macro define-macro="view" tal:define="field field|view/field;
- vocab python:field.Vocabulary(here);
- values accessor|view/items;
- fieldName fieldName|view/fieldName;
- widget nocall:widget|view/widget;
- portal nocall:portal|view/portal;
- mode nocall:mode|string:edit;
- errors nocall:errors|view/errors;
- immed_id view/brain/id|context/id;
- context_url view/context_url|context/absolute_url;
- baseid string:${fieldName}_${immed_id};">
-    <metal:use use-macro="field_macro | here/widgets/field/macros/edit">
-        <span metal:fill-slot="widget_body" 
+
+
+<metal:inlinetree_edit_macro define-macro="inlinetree_edit" 
+  tal:define="field field|view/field;
+	 vocab python:field.Vocabulary(here);
+	 values accessor|view/items;
+	 fieldName fieldName|view/fieldName;
+	 widget nocall:widget|view/widget;
+	 portal nocall:portal|view/portal;
+	 mode nocall:mode|string:edit;
+	 errors nocall:errors|view/errors;
+	 immed_id view/brain/id|context/id;
+	 context_url view/context_url|context/absolute_url;
+	 baseid string:${fieldName}_${immed_id};">
+
+<span
  tal:attributes="id string:parent-fieldname-$fieldName">
             <script type="text/javascript">
                 jq(document).ready(function(){
@@ -20,9 +23,11 @@
 			<div>
             <ul class="inline_tree" tal:attributes="id baseid">
                 <li>
-                    <img src="add_icon.gif" title="Click here to add an item" class="inlinetree_activator" tal:attributes="id string:${baseid}_activator" />
+                    <img src="add_icon.gif" tal:condition="python:mode=='edit'"
+	title="Click here to add an item" class="inlinetree_activator" tal:attributes="id string:${baseid}_activator" />
                 </li><li tal:repeat="item values" tal:attributes="id string:liid_${baseid}${item}">
-                    <img src="delete_icon.gif" title="Click here to delete" class="remove" tal:attributes="class string:remove ${baseid}_remove" /><span tal:replace="python: here.displayValue(vocab, item)">item</span>
+                    <img src="delete_icon.gif" tal:condition="python:mode=='edit'"
+	title="Click here to delete" class="remove" tal:attributes="class string:remove ${baseid}_remove" /><span tal:replace="python: here.displayValue(vocab, item)">item</span>
                 </li>
             </ul>
 			<div style="clear:both;"> </div>
@@ -37,14 +42,22 @@
             <div style="display:None" tal:attributes="id string:${baseid}_inlinetree" class="tree">
                 If you see this, slc.treecategories is not properly configured
             </div>
-        </span>
-    </metal:use>
-</metal:view_macro>
+    </span>
+</metal:inlinetree_edit_macro>
+
 <tal:ignore tal:condition="nothing">
-    <metal:define define-macro="edit">
-        <div metal:use-macro="here/at_widget_inlinetree/macros/view">
-        </div>
-    </metal:define>
+    <metal:view_macro define-macro="view">
+        <metal:use use-macro="here/at_widget_inlinetree/macros/inlinetree_edit" />
+    </metal:view_macro>
+
+    <metal:edit_macro define-macro="edit">
+      <metal:use use-macro="field_macro | here/widgets/field/macros/edit">
+        <metal:fill fill-slot="widget_body">
+          <metal:use use-macro="here/at_widget_inlinetree/macros/inlinetree_edit" />
+        </metal:fill>
+      </metal:use>
+    </metal:edit_macro>
+
     <metal:define metal:define-macro="search">
         <div metal:use-macro="here/at_widget_inlinetree/macros/view">
         </div>
