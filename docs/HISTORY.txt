@@ -1,11 +1,17 @@
 Changelog
 =========
 
-0.1.1 (unreleased)
-------------------
+0.1.1a1 (2009-11-26)
+--------------------
 
-- Nothing changed yet.
-
+- Inlinetree is now more like an archetypes widget. That means
+  if somebody wants to use it somewhere else, he must add some
+  variables to make it think it is in archetypes (thomasw)
+- Behave better on linguaplone (thomasw)
+- Added a view mode for the archetypes widget (thomasw)
+- Added a configuration option for not only showing the label of
+  the dictionary items, but also the key (thomasw)
+- Lazy loading of results and tree (gerken)
 
 0.0.2 (2009-10-20)
 ------------------
