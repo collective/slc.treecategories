@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.1a2 (2010-01-05)
+--------------------
+
+- Use collective.js.jqueryui and not collective.jqueryui (thomasw and jcbrand)
+
 0.1.1a1 (2009-11-26)
 --------------------
 
