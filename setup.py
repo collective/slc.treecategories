@@ -26,7 +26,7 @@ setup(name='slc.treecategories',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'collective.jqueryui',
+          'collective.js.jqueryui',
           'setuptools',
           'z3c.json',
           'zope.app.pagetemplate',
