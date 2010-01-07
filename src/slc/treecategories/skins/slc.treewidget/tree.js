@@ -73,27 +73,29 @@ function inline_tree_init(){
              */
             list.children().children('img').filter(function(){
                 className = this.className
-                return className.substring(className.length - 'remove'.length) == 'remove'
+                return className.substring(className.length - 'remove'.length) == 'remove' && !jq(this).data('click_added')
             }).each(function(){
-            jq(this).click(function(){
-                var item_to_remove = this
-                var li = jq(this).parent()[0]
-                var liid = li.id.substring("liid_".length + base_id.length)
-                if (!jq.map(inline_tree_this.getCategories(), function(object){
-                    return object.field
-                }).contains(base_id)) {
-                    inline_tree_this.addCategory({
-                        ajax_url: jq_('ajax_url').val(),
-                        field: fieldName,
-                        list: data_field,
-                        base_id : base_id
+                jq(this).click(function(){
+                    var item_to_remove = this
+                    var li = jq(this).parent()[0]
+                    var liid = li.id.substring("liid_".length + base_id.length)
+                    if (!jq.map(inline_tree_this.getCategories(), function(object){
+                        return object.field
+                    }).contains(fieldName)) {
+                        inline_tree_this.addCategory({
+                            ajax_url: jq_('ajax_url').val(),
+                            field: fieldName,
+                            list: data_field,
+                            base_id : base_id
+                        })
+                    }
+                    removeItems(inline_tree_this.getCategories(), liid, function(data, list, base_id){
+                        jq('#liid_' + base_id + liid).remove()
+                        jq_('inlinetree').dynatree('getTree').selectKey(liid, false)
                     })
-                }
-                removeItems(inline_tree_this.getCategories(), liid, function(data, list, base_id){
-                    jq('#liid_' + base_id + liid).remove()
-                    jq_('inlinetree').dynatree('getTree').selectKey(liid, false)
                 })
-            })})
+                jq(this).data('click_added', 1);
+            })
         }
         
         /* Build the tree */
@@ -161,7 +163,7 @@ function inline_tree_init(){
                 }
             });
            inline_tree_this.resetCategories();
-            inline_tree_this.addCategory({
+           inline_tree_this.addCategory({
                 ajax_url: jq_('ajax_url').val(),
                 field: fieldName,
                 list: data_field,
