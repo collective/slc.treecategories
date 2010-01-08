@@ -48,7 +48,7 @@ function inline_tree_init(){
         this.getCategories = getCategories
         this.resetCategories = resetCategories
         this.resetCategories()
-        var base_id = this.id
+        var base_id = this.id.replace('.', '\\.').replace(':', '\\:');
         var fx = this.fx
         if (!fx) {
             fx = {
@@ -61,7 +61,7 @@ function inline_tree_init(){
         var id_prefix = base_id + '-inline-'
         function jq_(suffix){
             // find an object with the current base id and the specified suffix.
-            return jq(("#" + base_id + '_' + suffix).replace(/\./g, '\\.'))
+            return jq(("#" + base_id + '_' + suffix))
         }
         var fieldName = jq_('fieldName').val()
         
@@ -121,8 +121,9 @@ function inline_tree_init(){
                     data:{'_':'1'},
                     success: function(reload, isError){
                         jq('#' + base_id + ' li').each(function(){
-                            var id = this.id.substring(5 + base_id.length)
+                            var id = this.id.substring(5 + base_id.replace('\\.', '.').replace('\\:', ':').length)
                             if (id) {
+                                debugger;
                                 jq_('inlinetree').dynatree('getTree').selectKey(id, true).makeVisible()
                             }
                         })
