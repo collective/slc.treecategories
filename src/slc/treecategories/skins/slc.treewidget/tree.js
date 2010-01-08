@@ -78,7 +78,7 @@ function inline_tree_init(){
                 jq(this).click(function(){
                     var item_to_remove = this
                     var li = jq(this).parent()[0]
-                    var liid = li.id.substring("liid_".length + base_id.length)
+                    var liid = li.id.substring("liid_".length + base_id.replace('\\.', '.').replace('\\:', ':').length)
                     if (!jq.map(inline_tree_this.getCategories(), function(object){
                         return object.field
                     }).contains(fieldName)) {
@@ -123,7 +123,6 @@ function inline_tree_init(){
                         jq('#' + base_id + ' li').each(function(){
                             var id = this.id.substring(5 + base_id.replace('\\.', '.').replace('\\:', ':').length)
                             if (id) {
-                                debugger;
                                 jq_('inlinetree').dynatree('getTree').selectKey(id, true).makeVisible()
                             }
                         })
@@ -138,10 +137,10 @@ function inline_tree_init(){
                         var id = dtnode.data.key;
                         addItems(inline_tree_this.getCategories(), id, function(data, list, base_id){
                             jq(list.children()[0]).after('<li id="liid_' +
-                            base_id +
+                            base_id.replace('\\.', '.').replace('\\:', ':') +
                             id +
                             '"><img src="delete_icon.gif" title="Click here to delete" class="remove ' +
-                            base_id +
+                            base_id.replace('\\.', '.').replace('\\:', ':') +
                             '_remove" />' +
                             data +
                             '</li>');
@@ -150,7 +149,7 @@ function inline_tree_init(){
                     }
                     else {
                         removeItems(inline_tree_this.getCategories(), dtnode.data.key, function(data, list, base_id){
-                            jq(('#liid_' + base_id + dtnode.data.key).replace(/\./g, '\\.')).remove();
+                            jq('#liid_' + base_id + dtnode.data.key).remove();
                         })
                     }
                 },
