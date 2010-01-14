@@ -137,7 +137,7 @@ class InlineTree(BrowserView):
                     self.context.reindexObject()
                 return displayList.getValue(add)
             if remove:
-                if controller(remove) and remove in values:
+                if remove in values:
                     values.remove(remove)
                     setter(values)
                     self.context.reindexObject()
