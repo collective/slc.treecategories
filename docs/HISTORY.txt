@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.1a3 (unreleased)
+0.1.1a3 (2010-01-14)
 --------------------
 
 - Now one can also remove broken categories (gerken)
