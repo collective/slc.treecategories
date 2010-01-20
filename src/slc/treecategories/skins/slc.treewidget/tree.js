@@ -81,7 +81,8 @@ function inline_tree_init(){
                     var liid = li.id.substring("liid_".length + base_id.replace('\\.', '.').replace('\\:', ':').length)
                     if (!jq.map(inline_tree_this.getCategories(), function(object){
                         return object.field
-                    }).contains(fieldName)) {
+                    }).filter(function(){return 'subcategory' == this;}) {
+/*                    }).contains(fieldName)) { */
                         inline_tree_this.addCategory({
                             ajax_url: jq_('ajax_url').val(),
                             field: fieldName,
