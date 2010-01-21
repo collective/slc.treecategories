@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.1a4 (unreleased)
+0.1.1a4 (2010-01-21)
 --------------------
 
 - Nothing changed yet.
