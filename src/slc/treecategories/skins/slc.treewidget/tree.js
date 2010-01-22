@@ -3,10 +3,10 @@
 "use strict";
 
 function inline_tree_init() {
-    if (this.inline_tree_initialised === true) {
+    if (self.inline_tree_initialised === true) {
         return;
     }
-    this.inline_tree_initialised = true;
+    self.inline_tree_initialised = true;
 
     // Javascript function for really adding a selected category to an object
     function addItems(objects, id, func) {
@@ -35,13 +35,13 @@ function inline_tree_init() {
 
     // Category management, can be overwritten
     function getCategories() {
-        return this._objects;
+        return self._objects;
     }
     function addCategory(category) {
-        this._objects = jq.merge(this._objects, jq.makeArray(category));
+        self._objects = jq.merge(self._objects, jq.makeArray(category));
     }
     function resetCategories() {
-        this._objects = jq.makeArray();
+        self._objects = jq.makeArray();
     }
 
 
@@ -136,11 +136,11 @@ function inline_tree_init() {
                                 }
                             }
                         });
-                        this['initialised_' + base_id] = true;
+                        self['initialised_' + base_id] = true;
                     }
                 },
                 onSelect: function (flag, dtnode) {
-                    if (this['initialised_' + base_id] !== true) {
+                    if (self['initialised_' + base_id] !== true) {
                         return;
                     }
                     if (flag) {
@@ -188,10 +188,10 @@ function inline_tree_init() {
 }
 
 function portlet_tree_init() {
-    if (this.tree_portlet_initialised === true) {
+    if (self.tree_portlet_initialised === true) {
         return;
     }
-    this.tree_portlet_initialised = true;
+    self.tree_portlet_initialised = true;
 
     jq('.tree_portlet_category').each(function (item) {
         var base_id = this.id;
@@ -260,10 +260,10 @@ function tree_init() {
     // all configuration for the dynamic elements. the base id for each
     // element, for example. Interaction with plone is done via the select box
     // only!
-    if (this.tree_initialised === true) {
+    if (self.tree_initialised === true) {
         return;
     }
-    this.tree_initialised = true;
+    self.tree_initialised = true;
     jq('.tree_values').each(function (item) {
         var base_id = this.id;
         var fx = this.fx;
