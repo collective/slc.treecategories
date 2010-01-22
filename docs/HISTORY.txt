@@ -1,16 +1,16 @@
 Changelog
 =========
 
-0.1.1a5 (unreleased)
+0.1.1a5 (2010-01-22)
 --------------------
 
-- Nothing changed yet.
+- Undid a change from cleanup (gerken)
 
 
 0.1.1a4 (2010-01-21)
 --------------------
 
-- Nothing changed yet.
+- Code cleanup (gerken)
 
 
 0.1.1a3 (2010-01-14)
