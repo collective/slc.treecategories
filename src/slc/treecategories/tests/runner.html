@@ -62,7 +62,7 @@
         </table>
         <div id='ex2' class='example2'>
             <ul>
-                <li class="activator" />
+                <li class="activator">+</li>
                 <li class="items" id="ex2_new_cat">new_cat</li>
             </ul>
             <div class="tree">tree</div>
@@ -99,7 +99,42 @@
             </ul>
             <div class="tree">tree</div>
         </div>
-</div>
+        <div>
+            I can't get dynatree to load in tests, so manual checks are
+            necessary here :-(
+            Below option Test key 1.2 should be active. Try to add another
+            key, try to remove the key you added and then try to remove the
+            key that was already there.
+            <div id='ex5' class='example5 example_preloaded'>
+                <ul>
+                    <li class="activator">+</li>
+                    <li class="items" id="ex5_key1.2">key1.2</li>
+                </ul>
+                <div class="tree">tree</div>
+            </div>
+            <div id='ex5_1' class='example5 example_preloaded'>
+                <ul>
+                    <li class="activator">+</li>
+                    <li class="items" id="ex5_1_key1.1">key1.1</li>
+                </ul>
+                <div class="tree">tree</div>
+            </div>
+            <script type="text/javascript">
+            $(document).ready(function(){
+                $('.example_preloaded').each(function () {
+                    var ctrl_args = {};
+                    ctrl_args.variable = this.id;
+                    ctrl_args.vocabulary_url = 'json_example';
+                    var ctrl = SLC_TREECATEGORIES.getController(ctrl_args);
+                    ctrl.addTreeObjects(this);
+                    if(this.id === 'ex5'){
+                        $('#ex5 .activator').click();
+                    }
+                });
+            });
+            </script>
+        </div>
+    </div>
 </body>
 </html>
 

@@ -11,36 +11,48 @@
      context_url view/context_url|context/absolute_url;
      baseid string:${fieldName}_${immed_id};">
 
-<span
- tal:attributes="id string:parent-fieldname-$fieldName">
-            <script type="text/javascript">
-                jq(document).ready(function(){
-                    inline_tree_init();
-                })
-            </script>
-            <div>
-            <ul class="inline_tree" tal:attributes="id baseid">
-                <li>
-                    <img src="add_icon.gif" tal:condition="python:mode=='edit'"
-           title="Click here to add an item" class="inlinetree_activator" tal:attributes="id string:${baseid}_activator" />
-                </li><li tal:repeat="item values" tal:attributes="id string:liid_${baseid}${item}">
-                    <img src="delete_icon.gif" tal:condition="python:mode=='edit'"
-    title="Click here to delete" class="remove" tal:attributes="class string:remove ${baseid}_remove" /><span tal:replace="python: here.displayValue(vocab, item)">item</span>
-                </li>
-            </ul>
-            <div style="clear:both;"> </div>
-            </div>
-            <div style="display:none">
-                <span class="tree_wait" i18n:translate="">Loading...</span>
-                <span class="tree_error" i18n:translate="">Load Error!</span>
-                <input type="hidden" tal:attributes="id string:${baseid}_fieldName;value fieldName" /><input type="hidden" tal:attributes="id string:${baseid}_vocabulary_url;
- value string:portal_vocabularies/${field/vocabulary/vocab_name}" /><input type="hidden" tal:attributes="id string:${baseid}_ajax_url;
+<div
+ tal:attributes="id string:$baseid" class="inline_tree_widget">
+    <script type="text/javascript">
+        jq(document).ready(function(){
+            jq('.inline_tree_widget').each(function () {
+                var ctrl_args = {};
+                jq_this = jq(this);
+                ctrl_args.html_input_id = this.id;
+                ctrl_args.fieldName = jq_this.find(".fieldName")[0].id;
+                ctrl_args.vocabulary_url = jq_this.find('input.vocabulary_url').getValue();
+                ctrl_args.ajax_url = jq_this.find('input.ajax_url').getValue();
+                var ctrl = SLC_TREECATEGORIES.getController(ctrl_args);
+                ctrl.addTreeObjects(this);
+            });
+        });
+    </script>
+    <div>
+        <ul class="inline_tree">
+            <li class="activator">
+                <img 
+                    src="add_icon.gif" tal:condition="python:mode=='edit'"
+                    title="Click here to add an item"
+                    alt="Click here to add an item" />
+            </li>
+            <li tal:repeat="item values" class="items" tal:attributes="id string:${baseid}_${item}">
+                <span tal:replace="python: here.displayValue(vocab, item)">item</span>
+            </li>
+        </ul>
+        <div style="clear:both;"> </div>
+    </div>
+    <div style="display:none">
+        <span class="tree_wait" i18n:translate="">Loading...</span>
+        <span class="tree_error" i18n:translate="">Load Error!</span>
+        <span class="fieldName"  tal:attributes="id fieldName" />
+        <input type="hidden" tal:attributes="id string:${baseid}_fieldName;value fieldName" /><input type="hidden" class="vocabulary_url" tal:attributes="id string:${baseid}_vocabulary_url;
+ value string:portal_vocabularies/${field/vocabulary/vocab_name}/json" /><input type="hidden" class="ajax_url" tal:attributes="id string:${baseid}_ajax_url;
  value string: ${context_url}/at_widget_inlinetree" />
-            </div>
-            <div style="display:None" tal:attributes="id string:${baseid}_inlinetree" class="tree">
+    </div>
+    <div style="display:None" tal:attributes="id string:${baseid}_inlinetree" class="tree">
                 If you see this, slc.treecategories is not properly configured
-            </div>
-    </span>
+    </div>
+</div>
 </metal:inlinetree_edit_macro>
 
 <tal:ignore tal:condition="nothing">
