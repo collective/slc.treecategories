@@ -16,6 +16,10 @@
     <script type="text/javascript">
         jq(document).ready(function(){
             jq('.inline_tree_widget').each(function () {
+                if(SLC_TREECATEGORIES.initialized !== undefined){
+                    return;
+                }
+                SLC_TREECATEGORIES.initialized = true;
                 var ctrl_args = {};
                 jq_this = jq(this);
                 ctrl_args.html_input_id = this.id;
