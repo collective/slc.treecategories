@@ -302,6 +302,6 @@ SLC_TREECATEGORIES.getTrees = function (elem, fieldName) {
         elem = $(elem);
     }
     return elem.map(function () {
-        return SLC_TREECATEGORIES.trees[elem[0].id];
+        return SLC_TREECATEGORIES.trees[this.id];
     });
 };
