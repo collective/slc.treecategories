@@ -25,7 +25,6 @@
                 ctrl_args.html_input_id = this.id;
                 ctrl_args.fieldName = jq_this.find(".fieldName")[0].id;
                 ctrl_args.vocabulary_url = jq_this.find('input.vocabulary_url').getValue();
-                ctrl_args.ajax_url = jq_this.find('input.ajax_url').getValue();
                 var ctrl = SLC_TREECATEGORIES.getController(ctrl_args);
                 ctrl.addTreeObjects(this);
             });
