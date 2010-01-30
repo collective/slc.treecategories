@@ -31,73 +31,89 @@
     </div>
     <div>
        <table>
-            <tr id='id1' class="exampleFail1">
+            <tr id='ex1' class="example1">
                 <td>
                     <ul>
                         <li class="activator" />
+                        <input type="hidden" class="ajax_url" value="" />
                     </ul>
                 </td>
             </tr>
         </table>
         <table>
-            <tr id='id2' class="exampleFail2">
+            <tr id='ex2' class="example2">
                 <td>
                     <div class="tree" />
+                    <input type="hidden" class="ajax_url" value="" />
                 </td>
             </tr>
         </table>
-        <div class="exampleFail3">
+        <div class="example3">
         </div>
         <table>
-            <tr id='ex1' class='example1'>
+            <tr id='ex3' class='example3'>
                 <td>
                     <ul>
                         <li class="activator" />
                     </ul>
+                    <input type="hidden" class="ajax_url" value="" />
                 </td>
                 <td>
                     <div class="tree" />
                 </td>
             </tr>
         </table>
-        <div id='ex2' class='example2'>
+        <div id='ex4' class='example4'>
             <ul>
                 <li class="activator">+</li>
-                <li class="items" id="ex2_new_cat">new_cat</li>
+                <li class="items" id="ex4_new_cat">new_cat</li>
             </ul>
             <div class="tree">tree</div>
         </div>
-         <div id='ex2_2' class='example2'>
+       <div id='ex5' class='example5'>
             <ul>
-                <li class="activator">energy</li>
-                <li class="items" id="ex2_2_new_cat">new_cat</li>
+                <li class="activator">+</li>
+                <li class="items" id="ex5_new_cat">new_cat</li>
             </ul>
             <div class="tree">tree</div>
+            <input type="hidden" class="ajax_url" value="" />
         </div>
-        <div id='ex3' class='example3'>
+         <div id='ex5_2' class='example5'>
             <ul>
                 <li class="activator">energy</li>
-                <li class="items" id="ex3_ew_cat">new_cat</li>
+                <li class="items" id="ex5_2_new_cat">new_cat</li>
             </ul>
             <div class="tree">tree</div>
+            <input type="hidden" class="ajax_url" value="" />
         </div>
-        <div id='ex4_1' class='example4'>
+        <div id='ex6' class='example6'>
             <ul>
                 <li class="activator">energy</li>
+                <li class="items" id="ex6_ew_cat">new_cat</li>
             </ul>
             <div class="tree">tree</div>
+            <input type="hidden" class="ajax_url" value="" />
         </div>
-        <div id='ex4_2' class='example4'>
+        <div id='ex7_1' class='example7'>
             <ul>
                 <li class="activator">energy</li>
             </ul>
             <div class="tree">tree</div>
+            <input type="hidden" class="ajax_url" value="" />
         </div>
-        <div id='ex4_3' class='example4'>
+        <div id='ex7_2' class='example7'>
             <ul>
                 <li class="activator">energy</li>
             </ul>
             <div class="tree">tree</div>
+            <input type="hidden" class="ajax_url" value="" />
+        </div>
+        <div id='ex7_3' class='example7'>
+            <ul>
+                <li class="activator">energy</li>
+            </ul>
+            <div class="tree">tree</div>
+            <input type="hidden" class="ajax_url" value="" />
         </div>
         <div>
             I can't get dynatree to load in tests, so manual checks are
@@ -105,34 +121,44 @@
             Below option Test key 1.2 should be active. Try to add another
             key, try to remove the key you added and then try to remove the
             key that was already there.
-            <div id='ex5' class='example5 example_preloaded'>
+            <div id='ex8' class='example8 example_preloaded'>
                 <ul>
                     <li class="activator">+</li>
-                    <li class="items" id="ex5_key1.2">key1.2</li>
+                    <li class="items" id="ex8_key1.2">key1.2</li>
                 </ul>
                 <div class="tree">tree</div>
+                <input type="hidden" class="ajax_url" value="" />
             </div>
-            <div id='ex5_1' class='example5 example_preloaded'>
+            <div id='ex8_1' class='example8 example_preloaded'>
                 <ul>
                     <li class="activator">+</li>
-                    <li class="items" id="ex5_1_key1.1">key1.1</li>
+                    <li class="items" id="ex8_1_key1.1">key1.1</li>
                 </ul>
                 <div class="tree">tree</div>
+                <input type="hidden" class="ajax_url" value="" />
             </div>
             <script type="text/javascript">
             $(document).ready(function(){
                 $('.example_preloaded').each(function () {
                     var ctrl_args = {};
-                    ctrl_args.variable = this.id;
+                    ctrl_args.html_input_id = this.id;
                     ctrl_args.vocabulary_url = 'json_example';
+                    ctrl_args.fieldName = 'varX';
                     var ctrl = SLC_TREECATEGORIES.getController(ctrl_args);
                     ctrl.addTreeObjects(this);
-                    if(this.id === 'ex5'){
-                        $('#ex5 .activator').click();
+                    if(this.id === 'ex8'){
+                        $('#ex8 .activator').click();
                     }
                 });
             });
             </script>
+        </div>
+        <div id='ex9' class='example9'>
+            <ul>
+                <li class="activator">energy</li>
+            </ul>
+            <div class="tree">tree</div>
+            <input type="hidden" class="ajax_url" value="" />
         </div>
     </div>
 </body>
