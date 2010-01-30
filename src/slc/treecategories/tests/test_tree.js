@@ -104,11 +104,11 @@ test('tree switch on and off', function () {
     var tree = SLC_TREECATEGORIES.getTrees($('.example9'))[0];
     var before_after = function (mthd, key){
         var before = $('.items').filter(function () {
-            return this.id === tree.idBuilder(key);
+            return this.id === tree.specificIdBuilder(key);
         });
         mthd(key);
         var after = $('.items').filter(function () {
-            return this.id === tree.idBuilder(key);
+            return this.id === tree.specificIdBuilder(key);
         });
         return after.length - before.length;
     };
