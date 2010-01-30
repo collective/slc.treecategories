@@ -73,7 +73,7 @@ test('controller registration', function () {
     expect(4);
     var controller1 = ctrlMaker('var3');
     controller1.addTreeObjects($('.example5'));
-    var trees = SLC_TREECATEGORIES.getTree($('.example5'), 'var3');
+    var trees = SLC_TREECATEGORIES.getTrees($('.example5'), 'var3');
     equals(true, trees !== undefined, 'We must be able to get a tree, now that we registered it');
     var i;
     for(i=0;i < trees.length;i+=1){
@@ -87,7 +87,7 @@ test('dynatree config', function () {
     expect(6);
     var controller1 = ctrlMaker('var4', 'json_example', '', 'treewait', 'treeerror');
     controller1.addTreeObjects($('.example5'));
-    var trees = SLC_TREECATEGORIES.getTree($('.example5'), 'var4');
+    var trees = SLC_TREECATEGORIES.getTrees($('.example5'), 'var4');
     var dynatree_options = trees[0].getDynatreeOptions();
     equals(dynatree_options.persistent, false);
     equals(dynatree_options.checkbox, true);
@@ -101,7 +101,7 @@ test('tree switch on and off', function () {
     expect(3);
     var controller = ctrlMaker('var');
     controller.addTreeObjects($('.example9'));
-    var tree = SLC_TREECATEGORIES.getTree($('.example9'), 'var')[0];
+    var tree = SLC_TREECATEGORIES.getTrees($('.example9'), 'var')[0];
     var before_after = function (mthd, key){
         var before = $('.items').filter(function () {
             return this.id === tree.idBuilder(key);
@@ -127,7 +127,7 @@ test('delete button', function () {
     expect(5);
     var controller = ctrlMaker('var');
     controller.addTreeObjects($('.example5'));
-    var tree = SLC_TREECATEGORIES.getTree($('.example5'), 'var')[0];
+    var tree = SLC_TREECATEGORIES.getTrees($('.example5'), 'var')[0];
     equals($('.example5 img.remove').length, 2);
     tree.toggleActive(true, {data: {key: '123'}});
     equals($('.example5 img.remove').length, 3);
@@ -157,9 +157,9 @@ test('multiselect', function () {
     expect(9);
     var controller = ctrlMaker('var');
     controller.addTreeObjects($('.example7'));
-    var tree1 = SLC_TREECATEGORIES.getTree($('.example7')[0], 'var')[0];
-    var tree2 = SLC_TREECATEGORIES.getTree($('.example7')[1], 'var')[0];
-    var tree3 = SLC_TREECATEGORIES.getTree($('.example7')[2], 'var')[0];
+    var tree1 = SLC_TREECATEGORIES.getTrees($('.example7')[0], 'var')[0];
+    var tree2 = SLC_TREECATEGORIES.getTrees($('.example7')[1], 'var')[0];
+    var tree3 = SLC_TREECATEGORIES.getTrees($('.example7')[2], 'var')[0];
     controller.addActive(tree1);
     controller.addActive(tree3);
     tree1.toggleActive(true, {data: {key: 't1'}});
