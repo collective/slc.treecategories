@@ -9,10 +9,6 @@ from slc.treecategories.tests.base import PortletsTestCase
 from zope.app.component.hooks import setHooks, setSite
 from zope.component import getUtility, getMultiAdapter #@UnresolvedImport
 
-
-
-
-
 class TestPortlet(PortletsTestCase):
 
     def afterSetUp(self):

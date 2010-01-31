@@ -10,7 +10,6 @@
     <five:registerPackage package="." initialize=".initialize"/>
     <include package=".browser"/>
     <include package=".widgets"/>
-    <include package=".portlets"/>
     <include package="Products.ATVocabularyManager"/>
     <include package="collective.js.jqueryui"/>
 
