@@ -52,7 +52,13 @@ SLC_TREECATEGORIES.getController = function (init_params) {
     SLC_TREECATEGORIES.controllers[init_params.fieldName] = retval;
 
     retval.addActive = function (tree) {
-        actives.push(tree);
+        if(tree.length === undefined){
+            tree = [tree];
+        }
+        var i;
+        for(i=0;i<tree.length;i+=1){
+            actives.push(tree[i]);
+        }
     };
 
     retval.resetActive = function () {
@@ -291,7 +297,7 @@ SLC_TREECATEGORIES.getController = function (init_params) {
 // Return undefined if no tree was generated
 // tree objects are created by registering elements
 // with a controller
-SLC_TREECATEGORIES.getTree = function (elem, fieldName) {
+SLC_TREECATEGORIES.getTrees = function (elem, fieldName) {
     if(elem.map === undefined){
         elem = $(elem);
     }
