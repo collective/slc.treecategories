@@ -3,7 +3,6 @@
            xmlns:five="http://namespaces.zope.org/five"
            xmlns:zcml="http://namespaces.zope.org/zcml">
 
-
     <browser:page
         for="*"
         name="json"
@@ -18,7 +17,7 @@
         permission="zope2.View"
         class=".browser.TreeMacros"
         />
-		
+
     <browser:page
         for="Products.ATContentTypes.content.base.ATCTContent"
         name="at_widget_inlinetree"
@@ -26,15 +25,6 @@
         permission="zope2.View"
         class=".browser.InlineTree"
         />
-		
-	<browser:page
-		for="*"
-		name="categorizer"
-		template="categorizer.pt"
-		permission="zope2.View"
-		class=".browser.MassCategorizer"
-		/>
-
 
     <adapter
         for="slc.treecategories.browser.browser.Json"
@@ -43,4 +33,3 @@
         />
 
 </configure>
-
