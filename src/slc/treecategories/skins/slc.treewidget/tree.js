@@ -4,10 +4,12 @@ SLC_TREECATEGORIES = {
     controllers : {},
     trees : {},
     exception : function(name, message){
-        //throw message;
         throw {
             name: name,
-            message: message
+            message: message,
+            toString: function() {
+                return this.name + ': ' + this.message
+            }
         };
     },
     reset : function(){
