@@ -109,11 +109,6 @@ class Json(object):
             retval.append(new_item)
         return retval
 
-class TreeMacros(BrowserView):
-    @property
-    def macros(self):
-        return self.index.macros
-
 class InlineTree(BrowserView):
     """
     A little view class just for ajax calls

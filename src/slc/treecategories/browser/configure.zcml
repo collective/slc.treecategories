@@ -12,14 +12,6 @@
 
     <browser:page
         for="Products.ATContentTypes.content.base.ATCTContent"
-        name="at_widget_tree"
-        template="tree.pt"
-        permission="zope2.View"
-        class=".browser.TreeMacros"
-        />
-
-    <browser:page
-        for="Products.ATContentTypes.content.base.ATCTContent"
         name="at_widget_inlinetree"
         template="inlinetree.pt"
         permission="zope2.View"
