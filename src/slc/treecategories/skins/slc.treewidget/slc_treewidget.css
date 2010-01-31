@@ -2,35 +2,6 @@ div.ui-dynatree-container {
 	border-style: none;
 }
 
-.ArchetypesTreeWidget .ui-dynatree-icon,.treecategories_portlet .ui-dynatree-icon
-	{
-	background-image: none;
-	margin: 0;
-	width: 0;
-}
-
-.ArchetypesTreeWidget .ui-dynatree-container,.treecategories_portlet .ui-dynatree-container
-	{
-	border: 0;
-	background-color: transparent;
-}
-
-.ArchetypesTreeWidget .tree_left {
-	display: inline;
-	float: left;
-	width: 40%;
-}
-
-.ArchetypesTreeWidget .tree_right {
-	display: inline;
-	float: left;
-	width: 40%;
-}
-
-.ArchetypesTreeWidget span.ui-dynatree-document a {
-	white-space: normal;
-}
-
 .ArchetypesInlineTreeWidget ul.inline_tree {
 	margin: 0 0 0 0;
 }
@@ -47,8 +18,4 @@ div.ui-dynatree-container {
 	list-style-position: outside;
 	list-style-image: none;
 	margin-bottom: 0px;
-}
-
-.ArchetypesInlineTreeWidget .remove {
-	background: url('delete-icon.gif');
 }
