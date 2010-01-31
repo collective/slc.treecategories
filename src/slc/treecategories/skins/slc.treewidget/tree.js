@@ -8,7 +8,7 @@ SLC_TREECATEGORIES = {
             name: name,
             message: message,
             toString: function() {
-                return this.name + ': ' + this.message
+                return this.name + ': ' + this.message;
             }
         };
     },
@@ -17,34 +17,42 @@ SLC_TREECATEGORIES = {
         this.trees = {};
     }
 };
-// Return a Controller registered for *variable*
+// Return a Controller registered for *html_input_id*
 // if no controller registered yet, register it
 
 SLC_TREECATEGORIES.getController = function (init_params) {
     // The controller
-    var retval = SLC_TREECATEGORIES.controllers[init_params.variable];
+    var retval = SLC_TREECATEGORIES.controllers[init_params.html_input_id];
     if(retval !== undefined){
         return retval;
     }
     var actives = [];
     retval = {};
     // create private Variables
-    var options = ['variable', 'vocabulary_url', 'tree_wait', 'tree_error'];
+    var options = ['html_input_id', 'fieldName', 'ajax_url', 'vocabulary_url', 'tree_wait', 'tree_error'];
     var i;
     for(i = 0;i<options.length;i+=1){
         retval[options[i]] = init_params[options[i]];
     }
     retval.debugLevel = 2;
     // Check preconditions
-    if(retval.variable === undefined){
-        throw SLC_TREECATEGORIES.exception('SETUP', "treecategories set up without variable");
+    if(retval.html_input_id === undefined){
+        throw SLC_TREECATEGORIES.exception('SETUP', "treecategories set up without html input id");
 
     }
     if(retval.vocabulary_url === undefined){
         throw SLC_TREECATEGORIES.exception('SETUP', "treecategories set up without vocabulary url");
     }
 
-    SLC_TREECATEGORIES.controllers[init_params.variable] = retval;
+    if(retval.ajax_url === undefined){
+        throw SLC_TREECATEGORIES.exception('SETUP', 'treecategories set up without ajax url');
+    }
+
+    if(retval.fieldName === undefined){
+        throw SLC_TREECATEGORIES.exception('SETUP', 'treecategories set up without fieldName');
+    }
+
+    SLC_TREECATEGORIES.controllers[init_params.html_input_id] = retval;
 
     retval.addActive = function (tree) {
         actives.push(tree);
@@ -76,12 +84,12 @@ SLC_TREECATEGORIES.getController = function (init_params) {
         groupOrSingleAction(tree, function(){
             this.addCategory(id);
         });
-    }
+    };
     retval.removeCategory = function (tree, id) {
         groupOrSingleAction(tree, function(){
             this.removeCategory(id);
         });
-    }
+    };
 
     //
     // ---- Tree code
@@ -99,8 +107,8 @@ SLC_TREECATEGORIES.getController = function (init_params) {
             }
         }
         var this_controller = this;
-        SLC_TREECATEGORIES.trees[this_controller.variable] = 
-            SLC_TREECATEGORIES.trees[this_controller.variable] || {};
+        SLC_TREECATEGORIES.trees[this_controller.html_input_id] = 
+            SLC_TREECATEGORIES.trees[this_controller.html_input_id] || {};
         return $(elems).each(function () {
             var that = this;
             var tree = {
@@ -113,32 +121,78 @@ SLC_TREECATEGORIES.getController = function (init_params) {
                 return id;
             };
 
+            tree.idUnBuilder = function (id) {
+                if(id.slice(0, tree.idPrefix.length) === tree.idPrefix){
+                    return id.slice(tree.idPrefix.length + 1);
+                }
+                return id;
+            };
+
+            tree.getTreeNode = function closure (id) {
+                var dynatree;
+                return function () {
+                    if(dynatree === undefined){
+                        dynatree = $(that).find('.tree').dynatree('getTree');
+                    }
+                    if(dynatree === undefined){
+                        return;
+                    }
+                    return dynatree.getNodeByKey(id);
+                }();
+            };
+
             tree.addCategory = function (id) {
                 var fullId = tree.idBuilder(id);
+                var smallId = tree.idUnBuilder(id);
                 var items = $(that).find('.activator, .items');
-                var clone = $(items[0]).clone();
-                clone.removeClass('activator');
-                clone.addClass('items');
-                clone.text(id);
-                clone[0].id = fullId;
-                $(items[items.size() - 1]).after(clone);
-                tree.addRemoveButton(fullId);
+                var i;
+                for(i=0;i<items.length;i+=1){
+                    if(items[i].id === fullId){
+                        return;
+                    }
+                }
+                var successMthd = function(data){
+                    var clone = $(items[0]).clone();
+                    clone.removeClass('activator');
+                    clone.addClass('items');
+                    clone.text(data);
+                    clone[0].id = fullId;
+                    $(items[items.size() - 1]).after(clone);
+                    tree.addRemoveButton();
+                };
+                if(this_controller.ajax_url){
+                    $.post(this_controller.ajax_url, {
+                        add: smallId,
+                        field: this_controller.fieldName
+                    }, successMthd);
+                } else {
+                    successMthd(smallId);
+                }
             };
 
             tree.removeCategory = function (id) {
                 var fullId = tree.idBuilder(id);
+                var smallId = tree.idUnBuilder(id);
                 $(that).find('.items').filter(function (){
                     return this.id === fullId;
                 }).remove();
+                var treeNode = tree.getTreeNode(smallId);
+                if(treeNode !== undefined){
+                    treeNode.select(false);
+                }
+                $.post(this_controller.ajax_url, {
+                    remove: smallId,
+                    field: this_controller.fieldName
+                });
             };
 
-            tree.addRemoveButton = function (id) {
-                $(that).find('#' + id).each(function () {
+            tree.addRemoveButton = function () {
+                $(that).find('.items').each(function () {
                     var jq_this = $(this);
                     if(jq_this.find('img.remove').length === 0){
                         $(this).prepend('<img src="delete_icon.gif" title="Click here to delete" class="remove">');
                         $(this).find('img').click(function  () {
-                            tree.removeCategory(id);
+                            this_controller.removeCategory(tree, jq_this[0].id);
                         });
                     }
                 });
@@ -158,7 +212,17 @@ SLC_TREECATEGORIES.getController = function (init_params) {
                 return $(that).find('#' + fullId).length > 0;
             };
 
-            tree.dynatree_loaded = function () {return true;};
+            tree.dynatree_loaded = function () {
+                $(that).find('.items').each(function () {
+                    var id = tree.idUnBuilder(this.id);
+                    var node = tree.getTreeNode(id);
+                    if(node !== null){
+                        node.activate();
+                        node.select();
+                        node.deactivate();
+                    }
+                });
+            };
             tree.getDynatreeOptions = function closure (){
                 var this_tree = this;
                 return function (){
@@ -205,29 +269,28 @@ SLC_TREECATEGORIES.getController = function (init_params) {
                         SLC_TREECATEGORIES.exception('SETUP', "HTML must contain .tree");
                     }
                     jq_that.find('.items').each(function () {
-                        this_tree.addRemoveButton(this.id);
+                        this_tree.addRemoveButton();
                     });
-//                    dynatree = dynatree_hook.dynatree(options);
                 }();
             };
             tree.init();
-            SLC_TREECATEGORIES.trees[this_controller.variable][that.id] = tree;
+            SLC_TREECATEGORIES.trees[this_controller.html_input_id][that.id] = tree;
         });
     };
     return retval;
 };
 
-// Return the tree object for *elem* and *variable*
+// Return the tree object for *elem* and *html_input_id*
 // Return undefined if no tree was generated
 // tree objects are created by registering elements
 // with a controller
-SLC_TREECATEGORIES.getTree = function (elem, variable) {
+SLC_TREECATEGORIES.getTree = function (elem, html_input_id) {
     if(elem.map === undefined){
         elem = $(elem);
     }
     return elem.map(function () {
-        var tree = SLC_TREECATEGORIES.trees[variable] && 
-            SLC_TREECATEGORIES.trees[variable][elem[0].id];
+        var tree = SLC_TREECATEGORIES.trees[html_input_id] && 
+            SLC_TREECATEGORIES.trees[html_input_id][elem[0].id];
         return tree;
     });
 };

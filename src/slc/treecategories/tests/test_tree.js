@@ -2,23 +2,35 @@
 module('tree', {
       setup: function () {}
     , teardown: function () {
-        SLC_TREECATEGORIES.reset();
     }
 });
 
-var ctrlMaker = function (var_, url, treewait, treeerror){
-    return SLC_TREECATEGORIES.getController({variable : var_,
-                                             vocabulary_url: url,
+var ctrlMaker = function (var_, vocab_url, ajax_url, fieldName, treewait, treeerror){
+    if (ajax_url === undefined){
+        ajax_url = "";
+    }
+    if (vocab_url === undefined){
+        vocab_url = 'json_example';
+    }
+    if (fieldName === undefined){
+        fieldName = "ignore";
+    }
+    return SLC_TREECATEGORIES.getController({html_input_id : var_,
+                                             vocabulary_url: vocab_url,
+                                             fieldName: fieldName,
+                                             ajax_url: ajax_url,
                                              tree_wait: treewait,
                                              tree_error: treeerror});};
 test('controller failureInit', function() {
-    expect(6);
-    function except(varname, url, msg){
+    expect(12);
+    function except(varname, vocab_url, ajax_url, fieldName, msg){
         var excepted;
         try{
             SLC_TREECATEGORIES.getController({
-                variable: varname, 
-                vocabulary_url: url});
+                html_input_id: varname, 
+                vocabulary_url: vocab_url,
+                fieldName: fieldName,
+                ajax_url: ajax_url});
         } catch (e) {
             equals(e.name, 'SETUP');
             equals(e.message, msg);
@@ -26,22 +38,24 @@ test('controller failureInit', function() {
         }
         equals(excepted, true);
     }
-    except(undefined, 'ignore', 'treecategories set up without variable');
-    except('ignore', undefined, 'treecategories set up without vocabulary url');
+    except(undefined, 'ignore', 'ignore', 'ignore', 'treecategories set up without html input id');
+    except('ignore', undefined, 'ignore', 'ignore', 'treecategories set up without vocabulary url');
+    except('ignore', 'ignore', undefined, 'ignore', 'treecategories set up without ajax url');
+    except('ignore', 'ignore', 'ignore', undefined, 'treecategories set up without fieldName');
 });
 
 test('controller init', function() {
     expect(2);
-    var controller1 = ctrlMaker('var1', 'http://127.0.0.1');
-    var controller2 = ctrlMaker('var1', 'http://127.0.0.1');
-    var controller3 = ctrlMaker('var2', 'http://127.0.0.1');
+    var controller1 = ctrlMaker('var1');
+    var controller2 = ctrlMaker('var1');
+    var controller3 = ctrlMaker('var2');
     same(controller1, controller2, "We must get the same instance");
-    equals(false, controller2 === controller3, "Different variable, must result in different controller");
+    equals(false, controller2 === controller3, "Different html_input_id, must result in different controller");
 });
 
 test('controller failedRegistrations', function () {
     expect(12);
-    var controller = ctrlMaker('var1', 'ignore');
+    var controller = ctrlMaker('var1');
     function except(path, msg){
         var excepted = false;
         try{
@@ -62,7 +76,7 @@ test('controller failedRegistrations', function () {
 
 test('controller registration', function () {
     expect(3);
-    var controller1 = ctrlMaker('var3', 'json_example');
+    var controller1 = ctrlMaker('var3');
     controller1.addTreeObjects($('.example1'));
     var trees = SLC_TREECATEGORIES.getTree($('.example1'), 'var3');
     equals(true, trees !== undefined, 'We must be able to get a tree, now that we registered it');
@@ -76,7 +90,7 @@ test('controller registration', function () {
 
 test('dynatree config', function () {
     expect(6);
-    var controller1 = ctrlMaker('var4', 'json_example', 'treewait', 'treeerror');
+    var controller1 = ctrlMaker('var4', 'json_example', '', '', 'treewait', 'treeerror');
     controller1.addTreeObjects($('.example1'));
     var trees = SLC_TREECATEGORIES.getTree($('.example1'), 'var4');
     var dynatree_options = trees[0].getDynatreeOptions();
@@ -90,7 +104,7 @@ test('dynatree config', function () {
 
 test('tree switch on and off', function () {
     expect(3);
-    var controller = ctrlMaker('var', 'json_example');
+    var controller = ctrlMaker('var');
     controller.addTreeObjects($('.example1'));
     var tree = SLC_TREECATEGORIES.getTree($('.example1'), 'var')[0];
     var before_after = function (mthd, key){
@@ -116,7 +130,7 @@ test('tree switch on and off', function () {
 
 test('delete button', function () {
     expect(5);
-    var controller = ctrlMaker('var', 'json_example');
+    var controller = ctrlMaker('var');
     controller.addTreeObjects($('.example2'));
     var tree = SLC_TREECATEGORIES.getTree($('.example2'), 'var')[0];
     equals($('.example2 img.remove').length, 2);
@@ -126,24 +140,27 @@ test('delete button', function () {
     equals($('.example2 img.remove').length, 2);
     tree.toggleActive(true, {data: {key: '123'}});
     equals($('.example2 img.remove').length, 3);
-    $('#' + tree.idBuilder('123') + ' img').click();
+    tree.toggleActive(false, {data: {key: '123'}});
     equals($('.example2 img.remove').length, 2);
 });
 
 test('lazy loading', function () {
-    expect(3);
-    var controller = ctrlMaker('var', 'json_example');
+    expect(5);
+    var dynatree = $($('.example3 .tree')[0]);
+    var controller = ctrlMaker('var');
     controller.addTreeObjects($('.example3'));
-    equals($('.example3 .ui-dynatree-container').length, 0);
+    equals($('.example3 .ui-dynatree-container').length, 0, 'No tree exists yet');
+    ok(dynatree.dynatree('getTree') === undefined);
     $('.example3 .activator').click();
-    equals($('.example3 .ui-dynatree-container').length, 1);
+    ok(dynatree.dynatree('getTree') !== undefined);
+    equals($('.example3 .ui-dynatree-container').length, 1, 'Tree exists');
     $('.example3 .activator').click();
-    equals($('.example3 .ui-dynatree-container').length, 1);
+    equals($('.example3 .ui-dynatree-container').length, 1, 'Tree still exists, we do not delete it');
 });
 
 test('multiselect', function () {
     expect(9);
-    var controller = ctrlMaker('var', 'json_example');
+    var controller = ctrlMaker('var');
     controller.addTreeObjects($('.example4'));
     var tree1 = SLC_TREECATEGORIES.getTree($('.example4')[0], 'var')[0];
     var tree2 = SLC_TREECATEGORIES.getTree($('.example4')[1], 'var')[0];
@@ -164,4 +181,3 @@ test('multiselect', function () {
     ok(!tree3.isActive('t2'));
     ok(tree3.isActive('t3'));
 });
-
