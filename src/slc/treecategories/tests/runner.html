@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr" id="html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>slc.treecategories Test Suite</title>
+    <link rel="Stylesheet" media="screen" href="qunit/testsuite.css" type="text/css"/>
+    <link rel="Stylesheet" media="screen" href="../skins/jquery.dynatree/ui.dynatree.css" type="text/css"/>
+    <!-- testing framework -->
+    <script type="text/javascript" src="../browser/jquery-dev.js"></script>
+    <script type="text/javascript" src="../skins/slc.treewidget/tree.js"></script>
+    <script type="text/javascript" src="qunit/testrunner.js"></script>
+    <script type="text/javascript" src="ui.core.js"></script>
+    <script type="text/javascript" src="../skins/jquery.dynatree/jquery.dynatree.js"></script>
+
+  
+    <!-- highlight searchterms -->
+    <script type="text/javascript" src="test_tree.js"></script>
+</head>
+
+<body id="body">
+    <h1 id="header">slc.treecategories Test Suite</h1>
+    <h2 id="banner"></h2>
+    <h2 id="userAgent"></h2>
+
+    <!-- Test HTML -->
+    <ol id="tests">
+        <li />
+    </ol>
+    <div id="main">
+    bla
+    </div>
+    <div>
+       <table>
+            <tr id='id1' class="exampleFail1">
+                <td>
+                    <ul>
+                        <li class="activator" />
+                    </ul>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <tr id='id2' class="exampleFail2">
+                <td>
+                    <div class="tree" />
+                </td>
+            </tr>
+        </table>
+        <div class="exampleFail3">
+        </div>
+        <table>
+            <tr id='ex1' class='example1'>
+                <td>
+                    <ul>
+                        <li class="activator" />
+                    </ul>
+                </td>
+                <td>
+                    <div class="tree" />
+                </td>
+            </tr>
+        </table>
+        <div id='ex2' class='example2'>
+            <ul>
+                <li class="activator" />
+                <li class="items" id="ex2_new_cat">new_cat</li>
+            </ul>
+            <div class="tree">tree</div>
+        </div>
+         <div id='ex2_2' class='example2'>
+            <ul>
+                <li class="activator">energy</li>
+                <li class="items" id="ex2_2_new_cat">new_cat</li>
+            </ul>
+            <div class="tree">tree</div>
+        </div>
+        <div id='ex3' class='example3'>
+            <ul>
+                <li class="activator">energy</li>
+                <li class="items" id="ex3_ew_cat">new_cat</li>
+            </ul>
+            <div class="tree">tree</div>
+        </div>
+        <div id='ex4_1' class='example4'>
+            <ul>
+                <li class="activator">energy</li>
+            </ul>
+            <div class="tree">tree</div>
+        </div>
+        <div id='ex4_2' class='example4'>
+            <ul>
+                <li class="activator">energy</li>
+            </ul>
+            <div class="tree">tree</div>
+        </div>
+        <div id='ex4_3' class='example4'>
+            <ul>
+                <li class="activator">energy</li>
+            </ul>
+            <div class="tree">tree</div>
+        </div>
+</div>
+</body>
+</html>
+
+
