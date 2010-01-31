@@ -1,9 +1,9 @@
 <object name="portal_skins">
-    <object name="slc.treewidget" 
+    <object name="slc.treewidget"
 			meta_type="Filesystem Directory View"
      		directory="slc.treecategories:skins/slc.treewidget"/>
 
-    <object name="jquery.dynatree" 
+    <object name="jquery.dynatree"
 			meta_type="Filesystem Directory View"
      		directory="slc.treecategories:skins/jquery.dynatree"/>
 

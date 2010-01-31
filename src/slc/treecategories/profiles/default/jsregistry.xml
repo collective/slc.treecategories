@@ -2,26 +2,26 @@
 <object name="portal_javascripts">
 
     <!-- this is enabled -->
-   	<javascript cacheable="True" compression="none" cookable="True"
+    <javascript cacheable="True" compression="none" cookable="True"
         enabled="True" inline="False" expression=""
               	id="++resource++jquery.ui/ui/ui.core.js"
 				insert-before="jquery-integration.js"/>
-   	<javascript cacheable="True" compression="none" cookable="True"
+    <javascript cacheable="True" compression="none" cookable="True"
         enabled="True" inline="False" expression=""
               	id="++resource++jquery.ui/ui/ui.draggable.js"
 				insert-before="jquery-integration.js"
 				insert-after="++resource++jquery.ui/ui/ui.core.js" />
-   	<javascript cacheable="True" compression="none" cookable="True"
+    <javascript cacheable="True" compression="none" cookable="True"
         enabled="True" inline="False" expression=""
               	id="++resource++jquery.ui/ui/ui.droppable.js"
 				insert-before="jquery-integration.js"
 				insert-after="++resource++jquery.ui/ui/ui.core.js" />
-   	<javascript cacheable="True" compression="none" cookable="True"
+    <javascript cacheable="True" compression="none" cookable="True"
         enabled="True" inline="False" expression=""
               	id="jquery.dynatree.min.js"
 				insert-before="jquery-integration.js"
 				insert-after="++resource++jquery.ui/ui/ui.core.js" />
-   	<javascript cacheable="True" compression="True" cookable="True"
+    <javascript cacheable="True" compression="True" cookable="True"
         enabled="True" inline="False" expression=""
 		insert-before="jquery-integration.js"
 		insert-after="jquery.dynatree.min.js"
