@@ -12,12 +12,11 @@
     <include package=".widgets"/>
     <include package=".portlets"/>
     <include package="Products.ATVocabularyManager"/>
-    <include package="collective.jqueryui"/>
     <include package="collective.js.jqueryui"/>
-    
+
     <cmf:registerDirectory name="slc.treewidget"/>
     <cmf:registerDirectory name="jquery.dynatree"/>
-    
+
     <genericsetup:registerProfile
      name="default"
      title="Dynatree Archetypes Widget"
