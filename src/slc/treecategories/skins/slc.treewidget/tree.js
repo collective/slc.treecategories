@@ -123,14 +123,14 @@ SLC_TREECATEGORIES.getController = function (init_params) {
             tree.ajax_url = ajax[0].value;
 
 
-            tree.idBuilder = function (id) {
+            tree.specificIdBuilder = function (id) {
                 if(id.slice(0, tree.idPrefix.length) !== tree.idPrefix){
                     return tree.idPrefix + '_' + id;
                 }
                 return id;
             };
 
-            tree.idUnBuilder = function (id) {
+            tree.commonIdBuilder = function (id) {
                 if(id.slice(0, tree.idPrefix.length) === tree.idPrefix){
                     return id.slice(tree.idPrefix.length + 1);
                 }
@@ -144,19 +144,18 @@ SLC_TREECATEGORIES.getController = function (init_params) {
                         dynatree = $(that).find('.tree').dynatree('getTree');
                     }
                     if(dynatree === undefined){
-                        return;
+                        return undefined;
                     }
                     return dynatree.getNodeByKey(id);
                 }();
             };
 
             tree.addCategory = function (id) {
-                var fullId = tree.idBuilder(id);
-                var smallId = tree.idUnBuilder(id);
+                var specificId = tree.specificIdBuilder(id);
                 var items = $(that).find('.activator, .items');
                 var i;
                 for(i=0;i<items.length;i+=1){
-                    if(items[i].id === fullId){
+                    if(items[i].id === specificId){
                         return;
                     }
                 }
@@ -165,33 +164,32 @@ SLC_TREECATEGORIES.getController = function (init_params) {
                     clone.removeClass('activator');
                     clone.addClass('items');
                     clone.text(data);
-                    clone[0].id = fullId;
+                    clone[0].id = specificId;
                     $(items[items.size() - 1]).after(clone);
                     tree.addRemoveButton();
                 };
                 if(tree.ajax_url){
                     $.post(tree.ajax_url, {
-                        add: smallId,
+                        add: id,
                         field: this_controller.fieldName
                     }, successMthd);
                 } else {
-                    successMthd(smallId);
+                    successMthd(id);
                 }
             };
 
             tree.removeCategory = function (id) {
-                var fullId = tree.idBuilder(id);
-                var smallId = tree.idUnBuilder(id);
+                var specificId = tree.specificIdBuilder(id);
                 $(that).find('.items').filter(function (){
-                    return this.id === fullId;
+                    return this.id === specificId;
                 }).remove();
-                var treeNode = tree.getTreeNode(smallId);
-                if(treeNode !== undefined){
+                var treeNode = tree.getTreeNode(id);
+                if(treeNode !== undefined && treeNode !== null){
                     treeNode.select(false);
                 }
                 if(tree.ajax_url !== ''){
                     $.post(tree.ajax_url, {
-                        remove: smallId,
+                        remove: id,
                         field: this_controller.fieldName
                     });
                 }
@@ -203,7 +201,8 @@ SLC_TREECATEGORIES.getController = function (init_params) {
                     if(jq_this.find('img.remove').length === 0){
                         $(this).prepend('<img src="delete_icon.gif" title="Click here to delete" class="remove">');
                         $(this).find('img').click(function  () {
-                            this_controller.removeCategory(tree, jq_this[0].id);
+                            var commonId = tree.commonIdBuilder(jq_this[0].id);
+                            this_controller.removeCategory(tree, commonId);
                         });
                     }
                 });
@@ -219,18 +218,17 @@ SLC_TREECATEGORIES.getController = function (init_params) {
             };
 
             tree.isActive = function(id) {
-                var fullId = tree.idBuilder(id);
-                return $(that).find('#' + fullId).length > 0;
+                var specificId = tree.specificIdBuilder(id);
+                return $(that).find('#' + specificId).length > 0;
             };
 
             tree.dynatree_loaded = function () {
+                var dyna = $(that).find('.tree').dynatree('getTree');
                 $(that).find('.items').each(function () {
-                    var id = tree.idUnBuilder(this.id);
-                    var node = tree.getTreeNode(id);
-                    if(node !== null){
-                        node.activate();
-                        node.select();
-                        node.deactivate();
+                    var id = tree.commonBuilder(this.id);
+                    var node = dyna.selectKey(id, true);
+                    if (node !== null){
+                        node.makeVisible();
                     }
                 });
             };
