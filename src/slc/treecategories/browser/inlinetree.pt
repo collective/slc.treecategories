@@ -16,10 +16,10 @@
     <script type="text/javascript">
         jq(document).ready(function(){
             jq('.inline_tree_widget').each(function () {
-                if(SLC_TREECATEGORIES.initialized !== undefined){
+                if(SLC_TREECATEGORIES.initialized[this.id] !== undefined){
                     return;
                 }
-                SLC_TREECATEGORIES.initialized = true;
+                SLC_TREECATEGORIES.initialized[this.id] = true;
                 var ctrl_args = {};
                 jq_this = jq(this);
                 ctrl_args.html_input_id = this.id;

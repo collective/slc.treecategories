@@ -3,6 +3,7 @@
 SLC_TREECATEGORIES = {
     controllers : {},
     trees : {},
+    initialized : {},
     exception : function(name, message){
         throw {
             name: name,
@@ -22,14 +23,14 @@ SLC_TREECATEGORIES = {
 
 SLC_TREECATEGORIES.getController = function (init_params) {
     // The controller
-    var retval = SLC_TREECATEGORIES.controllers[init_params.html_input_id];
+    var retval = SLC_TREECATEGORIES.controllers[init_params.fieldName];
     if(retval !== undefined){
         return retval;
     }
     var actives = [];
     retval = {};
     // create private Variables
-    var options = ['html_input_id', 'fieldName', 'ajax_url', 'vocabulary_url', 'tree_wait', 'tree_error'];
+    var options = ['html_input_id', 'fieldName', 'vocabulary_url', 'tree_wait', 'tree_error'];
     var i;
     for(i = 0;i<options.length;i+=1){
         retval[options[i]] = init_params[options[i]];
@@ -44,15 +45,11 @@ SLC_TREECATEGORIES.getController = function (init_params) {
         throw SLC_TREECATEGORIES.exception('SETUP', "treecategories set up without vocabulary url");
     }
 
-    if(retval.ajax_url === undefined){
-        throw SLC_TREECATEGORIES.exception('SETUP', 'treecategories set up without ajax url');
-    }
-
     if(retval.fieldName === undefined){
         throw SLC_TREECATEGORIES.exception('SETUP', 'treecategories set up without fieldName');
     }
 
-    SLC_TREECATEGORIES.controllers[init_params.html_input_id] = retval;
+    SLC_TREECATEGORIES.controllers[init_params.fieldName] = retval;
 
     retval.addActive = function (tree) {
         actives.push(tree);
@@ -107,13 +104,21 @@ SLC_TREECATEGORIES.getController = function (init_params) {
             }
         }
         var this_controller = this;
-        SLC_TREECATEGORIES.trees[this_controller.html_input_id] = 
-            SLC_TREECATEGORIES.trees[this_controller.html_input_id] || {};
+        SLC_TREECATEGORIES.trees[this_controller.fieldName] = 
+            SLC_TREECATEGORIES.trees[this_controller.fieldName] || {};
         return $(elems).each(function () {
             var that = this;
             var tree = {
                 idPrefix: this.id
             };
+
+            var ajax = $(this).find('input.ajax_url');
+            if(ajax[0] === undefined){
+                SLC_TREECATEGORIES.exception('SETUP', "HTML must contain input.ajax_url");
+            }
+            tree.ajax_url = ajax[0].value;
+
+
             tree.idBuilder = function (id) {
                 if(id.slice(0, tree.idPrefix.length) !== tree.idPrefix){
                     return tree.idPrefix + '_' + id;
@@ -160,8 +165,8 @@ SLC_TREECATEGORIES.getController = function (init_params) {
                     $(items[items.size() - 1]).after(clone);
                     tree.addRemoveButton();
                 };
-                if(this_controller.ajax_url){
-                    $.post(this_controller.ajax_url, {
+                if(that.ajax_url){
+                    $.post(that.ajax_url, {
                         add: smallId,
                         field: this_controller.fieldName
                     }, successMthd);
@@ -180,10 +185,12 @@ SLC_TREECATEGORIES.getController = function (init_params) {
                 if(treeNode !== undefined){
                     treeNode.select(false);
                 }
-                $.post(this_controller.ajax_url, {
-                    remove: smallId,
-                    field: this_controller.fieldName
-                });
+                if(that.ajax_url !== ''){
+                    $.post(that.ajax_url, {
+                        remove: smallId,
+                        field: this_controller.fieldName
+                    });
+                }
             };
 
             tree.addRemoveButton = function () {
@@ -249,6 +256,7 @@ SLC_TREECATEGORIES.getController = function (init_params) {
                 var jq_that = $(that);
                 var activator;
                 var dynatree;
+                var ajax_url;
                 return function (){
                     var dynatree_hook, options;
                     activator = jq_that.find('.activator');
@@ -265,6 +273,7 @@ SLC_TREECATEGORIES.getController = function (init_params) {
                     }, function () {
                         dynatree_hook.hide();
                     });
+
                     if (dynatree_hook[0] === undefined){
                         SLC_TREECATEGORIES.exception('SETUP', "HTML must contain .tree");
                     }
@@ -274,7 +283,7 @@ SLC_TREECATEGORIES.getController = function (init_params) {
                 }();
             };
             tree.init();
-            SLC_TREECATEGORIES.trees[this_controller.html_input_id][that.id] = tree;
+            SLC_TREECATEGORIES.trees[this_controller.fieldName][that.id] = tree;
         });
     };
     return retval;
@@ -284,13 +293,13 @@ SLC_TREECATEGORIES.getController = function (init_params) {
 // Return undefined if no tree was generated
 // tree objects are created by registering elements
 // with a controller
-SLC_TREECATEGORIES.getTree = function (elem, html_input_id) {
+SLC_TREECATEGORIES.getTree = function (elem, fieldName) {
     if(elem.map === undefined){
         elem = $(elem);
     }
     return elem.map(function () {
-        var tree = SLC_TREECATEGORIES.trees[html_input_id] && 
-            SLC_TREECATEGORIES.trees[html_input_id][elem[0].id];
+        var tree = SLC_TREECATEGORIES.trees[fieldName] && 
+            SLC_TREECATEGORIES.trees[fieldName][elem[0].id];
         return tree;
     });
 };
