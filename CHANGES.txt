@@ -1,10 +1,10 @@
 Changelog
 =========
 
-0.5.0b3 (unreleased)
+0.5.0b3 (2010-02-01)
 --------------------
 
-- Nothing changed yet.
+- Releasing with git seems to be broken, trying again (gerken)
 
 
 0.5.0b2 (2010-02-01)
