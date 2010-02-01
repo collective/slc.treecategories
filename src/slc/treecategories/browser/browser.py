@@ -91,7 +91,7 @@ class Json(object):
             # he is filtered, even if he has children!
             if invert_key_limiter and not keyFilter(key):
                 continue
-            children = self._convert(children, keyFilter, fullTextFilter 
+            children = self._convert(children, keyFilter, fullTextFilter,
                                      expanded, invert_key_limiter, display_ids)
             if not children and not keyFilter(key):
                 continue

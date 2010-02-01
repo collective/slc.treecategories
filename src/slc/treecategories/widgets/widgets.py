@@ -7,8 +7,8 @@ from slc.treecategories.interfaces import IInlineTreeView
 from zope.component import getMultiAdapter
 from zope.interface import implements
 
-class InlineTreeWidget(TreeWidget):
-    _properties = TreeWidget._properties.copy()
+class InlineTreeWidget(Widget.InAndOutWidget):
+    _properties = Widget.InAndOutWidget._properties.copy()
     _properties.update({'macro' : 'at_widget_inlinetree'})
 
 registerWidget(InlineTreeWidget,
