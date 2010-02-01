@@ -225,7 +225,7 @@ SLC_TREECATEGORIES.getController = function (init_params) {
             tree.dynatree_loaded = function () {
                 var dyna = $(that).find('.tree').dynatree('getTree');
                 $(that).find('.items').each(function () {
-                    var id = tree.commonBuilder(this.id);
+                    var id = tree.commonIdBuilder(this.id);
                     var node = dyna.selectKey(id, true);
                     if (node !== null){
                         node.makeVisible();
