@@ -1,13 +1,13 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.1.1a5dev'
+version = '0.1.1a6dev'
 
 setup(name='slc.treecategories',
       version=version,
       description="Support for tree categories",
       long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+                       open(os.path.join("CHANGES.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Plone",
@@ -26,7 +26,6 @@ setup(name='slc.treecategories',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'collective.jqueryui',
           'collective.js.jqueryui',
           'setuptools',
           'z3c.json',

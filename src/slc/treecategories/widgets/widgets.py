@@ -7,22 +7,8 @@ from slc.treecategories.interfaces import IInlineTreeView
 from zope.component import getMultiAdapter
 from zope.interface import implements
 
-class TreeWidget(Widget.InAndOutWidget):
-    _properties = Widget.InAndOutWidget._properties.copy() #@UndefinedVariable
-    _properties.update({
-        'macro' : "at_widget_tree",
-        })
-
-registerWidget(TreeWidget,
-               title='Tree',
-               description=('Renders a widget for moving items '
-                            'from one tree to another. Items are '
-                            'removed from the first tree.'),
-               used_for=('Products.Archetypes.Field.LinesField',)
-               )
-
-class InlineTreeWidget(TreeWidget):
-    _properties = TreeWidget._properties.copy()
+class InlineTreeWidget(Widget.InAndOutWidget):
+    _properties = Widget.InAndOutWidget._properties.copy()
     _properties.update({'macro' : 'at_widget_inlinetree'})
 
 registerWidget(InlineTreeWidget,
@@ -61,11 +47,10 @@ class InlineTreeView(BrowserView):
     @property
     def widget(self):
         return self.field.widget
-    
+
     #property
     def portal(self):
         return self.context
-    
     errors = {}
 
     render = ViewPageTemplateFile("../browser/inlinetree.pt")

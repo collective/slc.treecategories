@@ -35,7 +35,5 @@ def indexTree(obj, portal, vars=None):
             path.extend(getPath(term, ('', all_dicts)))
         return path
 
-
-
 def initialize(context):
     registerIndexableAttribute('tree_categories', indexTree)

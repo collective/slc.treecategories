@@ -1,16 +1,22 @@
 Changelog
 =========
 
-0.1.1a5 (unreleased)
+0.1.1a6 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Clean up of all code, complete rewrite of js tests. Now with tests (gerken)
+
+
+0.1.1a5 (2010-01-22)
+--------------------
+
+- Undid a change from cleanup (gerken)
 
 
 0.1.1a4 (2010-01-21)
 --------------------
 
-- Nothing changed yet.
+- Code cleanup (gerken)
 
 
 0.1.1a3 (2010-01-14)
