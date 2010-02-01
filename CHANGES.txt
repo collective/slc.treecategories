@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.1a6 (unreleased)
+0.5.0b1 (2010-02-01)
 --------------------
 
 - Clean up of all code, complete rewrite of js tests. Now with tests (gerken)
