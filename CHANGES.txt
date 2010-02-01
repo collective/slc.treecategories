@@ -4,7 +4,7 @@ Changelog
 0.1.1a6 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Clean up of all code, complete rewrite of js tests. Now with tests (gerken)
 
 
 0.1.1a5 (2010-01-22)
