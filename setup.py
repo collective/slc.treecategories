@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.5.0b3'
+version = '0.5.0b4'
 
 setup(name='slc.treecategories',
       version=version,
