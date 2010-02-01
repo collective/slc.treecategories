@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.5.0b5 (unreleased)
+0.5.0b5 (2010-02-02)
 --------------------
 
 - Nothing changed yet.
