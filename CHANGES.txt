@@ -1,10 +1,10 @@
 Changelog
 =========
 
-0.5.0b2 (unreleased)
+0.5.0b2 (2010-02-01)
 --------------------
 
-- Nothing changed yet.
+- There was one mistake left in js (gerken)
 
 
 0.5.0b1 (2010-02-01)
