@@ -7,7 +7,6 @@
  i18n_domain="slc.treecategories">
 
     <i18n:registerTranslations directory="locales"/>
-    <five:registerPackage package="." initialize=".initialize"/>
     <include package=".browser"/>
     <include package=".widgets"/>
     <include package="Products.ATVocabularyManager"/>

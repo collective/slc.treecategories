@@ -30,7 +30,8 @@ setup(name='slc.treecategories',
           'collective.js.jqueryui',
           'z3c.json',
           'zope.app.pagetemplate',
-          'Products.ATVocabularyManager'
+          'Products.ATVocabularyManager',
+          'plone.indexer'
           # -*- Extra requirements: -*-
       ],
       extras_require=dict(test=['slc.treecategoriesexample']),

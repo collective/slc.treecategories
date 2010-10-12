@@ -2,3 +2,6 @@ bin/
 include/
 lib/
 src/slc.treecategories.egg-info
+*.pyc
+*.mo
+

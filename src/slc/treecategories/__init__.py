@@ -1,6 +1,7 @@
-from Products.CMFPlone.CatalogTool import registerIndexableAttribute
+from plone.indexer.decorator import indexer
+
 from Products.Archetypes.interfaces import IBaseContent
-from Products.Archetypes.interfaces._vocabulary import IVocabulary
+from Products.Archetypes.interfaces.vocabulary import IVocabulary
 
 from zope.i18nmessageid import MessageFactory
 
@@ -18,10 +19,8 @@ def getPath(uid, dict_, path=[]):
             return retval
     return []
 
-def indexTree(obj, portal, vars=None):
-    if not IBaseContent.providedBy(obj):
-        # No archetypes, no support
-        raise AttributeError
+@indexer(IBaseContent)
+def indexTree(object, **kw):
     for field in obj.schema.fields():
         if not IVocabulary.providedBy(field.vocabulary):
             # Wrong vocabulary type
@@ -35,5 +34,3 @@ def indexTree(obj, portal, vars=None):
             path.extend(getPath(term, ('', all_dicts)))
         return path
 
-def initialize(context):
-    registerIndexableAttribute('tree_categories', indexTree)
