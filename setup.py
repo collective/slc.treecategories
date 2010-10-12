@@ -6,7 +6,7 @@ version = '0.5.0b6dev'
 setup(name='slc.treecategories',
       version=version,
       description="Support for tree categories",
-      long_description=open("README.txt").read() + "\n" +
+      long_description=open("README.rst").read() + "\n" +
                        open(os.path.join("CHANGES.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
@@ -26,8 +26,8 @@ setup(name='slc.treecategories',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          'collective.js.jqueryui',
           'setuptools',
+          'collective.js.jqueryui',
           'z3c.json',
           'zope.app.pagetemplate',
           'Products.ATVocabularyManager'
