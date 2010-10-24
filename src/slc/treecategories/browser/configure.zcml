@@ -18,10 +18,17 @@
         class=".browser.InlineTree"
         />
 
-    <adapter
+    <browser:page
+        for="Products.Archetypes.interfaces.IBaseObject"
+        name="at_widget_dynatree_json"
+        permission="zope2.View"
+        class=".browser.ATFieldVocabJsonView"
+        />
+
+    <!--adapter
         for="slc.treecategories.browser.browser.Json"
         name="generic"
         factory=".browser.GenericVocabularyInfo"
-        />
+        /-->
 
 </configure>

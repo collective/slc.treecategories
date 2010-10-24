@@ -9,7 +9,12 @@
     <javascript cacheable="True" compression="True" cookable="True"
         enabled="True" inline="False" expression=""
 		insert-after="jquery.dynatree.min.js"
-              	id="tree.js"/>
+              	id="dynatree.js"/>
+				
+    <javascript cacheable="True" compression="True" cookable="True"
+        enabled="True" inline="False" expression=""
+		insert-after="dynatree.js"
+              	id="dynatree-init.js"/>
 				
 </object>
 

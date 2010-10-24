@@ -1,28 +1,63 @@
-from Products.Archetypes.Field import LinesField
 from Products.Archetypes.interfaces import IBaseObject, IVocabulary, ISchema
+from Products.Archetypes.utils import OrderedDict
 from Products.Five.browser import BrowserView
 from z3c.json.converter import JSONWriter
-from zope.app.container.interfaces import IContainer
-from zope.app.pagetemplate.simpleviewclass import simple
 from zope.component import queryAdapter
 from zope.interface import implements
 
-from slc.treecategories.interfaces import IVocabularyInfo
 
-class CustomKeyError(KeyError):
+def dict2dynatree(input_dict, keyFilter, fullTextFilter,
+              expanded=False, invert_key_limiter=False, display_ids=False):
     """
-    Use this class, if you don't want to return a 503 for an uncatched
-    exception
+    Recursively parse the dictionary as we get it from the
+    IVocabulary, and transform it to a a dictionary as needed for
+    dynatree
     """
-    pass
+    if input_dict == None:
+        return None
+    retval = []
+    input_list = input_dict.items()
+#    input_list.sort(lambda a, b:cmp(a[1][0], b[1][0]))
+    for key, (title, children) in input_list:
+        # if we inverted the key limiter, we dont want a node to appear if
+        # he is filtered, even if he has children!
+        if invert_key_limiter and not keyFilter(key):
+            continue
+        children = dict2dynatree(children, keyFilter, fullTextFilter,
+                                 expanded, invert_key_limiter, display_ids)
+        if not children and not keyFilter(key):
+            continue
+        if not children and not fullTextFilter(title):
+            continue
+        new_item = {}
+        if display_ids:
+            title = '%s (%s)' % (title, key)
+        else:
+            title = title
+        new_item['title'] = title
+        new_item['key'] = key
+        new_item['children'] = children
+        new_item['expand'] = expanded
+        retval.append(new_item)
+    return retval
 
-class GenericVocabularyInfo(object):
-    implements(IVocabularyInfo)
 
-    def __init__(self, *args, **kw):
-        pass
+class ATFieldVocabJsonView(BrowserView):
+    def __call__(self):
+        fieldname = self.request.get('fieldname')
+        field = self.context.Schema()[fieldname]
+        import pdb; pdb.set_trace()
+        if IVocabulary.providedBy(field.vocabulary):
+            tree = field.vocabulary.getVocabularyDict(self.context)
+        else:
+            vocab = field.Vocabulary(self.context)
+            tree = OrderedDict()
+            for key in vocab:
+                tree[key] = vocab.getValue(key)
+        tree = dict2dynatree(tree, lambda x: True, lambda x: True)
+        return JSONWriter().write(tree)
 
-    display_ids = False
+                
 
 class Json(object):
     """
@@ -74,40 +109,6 @@ class Json(object):
                                                 invert_key_limiter,
                                                 display_ids))
 
-    def _convert(self, input_dict, keyFilter, fullTextFilter,
-                  expanded=False, invert_key_limiter=False, display_ids=False):
-        """
-        Recursively parse the dictionary as we get it from the
-        IVocabulary, and transform it to a a dictionary as needed for
-        dynatree
-        """
-        if input_dict == None:
-            return None
-        retval = []
-        input_list = input_dict.items()
-        input_list.sort(lambda a, b:cmp(a[1][0], b[1][0]))
-        for key, (title, children) in input_list:
-            # if we inverted the key limiter, we dont want a node to appear if
-            # he is filtered, even if he has children!
-            if invert_key_limiter and not keyFilter(key):
-                continue
-            children = self._convert(children, keyFilter, fullTextFilter,
-                                     expanded, invert_key_limiter, display_ids)
-            if not children and not keyFilter(key):
-                continue
-            if not children and not fullTextFilter(title):
-                continue
-            new_item = {}
-            if display_ids:
-                title = '%s (%s)' % (title, key)
-            else:
-                title = title
-            new_item['title'] = title
-            new_item['key'] = key
-            new_item['children'] = children
-            new_item['expand'] = expanded
-            retval.append(new_item)
-        return retval
 
 class InlineTree(BrowserView):
     """
