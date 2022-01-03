@@ -23,7 +23,7 @@ is provided by a custom indexer 'tree_categories'.
 InlineTreeWidget
 ----------------
 The widget is based on the jquery extension dynatree:
-http://wwwendt.de/tech/dynatree/index.html
+https://wwwendt.de/tech/dynatree/index.html
 
 It generates list of selected options and a button to show a tree of possible
 options. You can add Options by clicking on the checkbox, and you can remove
