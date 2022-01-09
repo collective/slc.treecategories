@@ -8,7 +8,7 @@ setup(name='slc.treecategories',
       description="Support for tree categories",
       long_description=open("README.rst").read() + "\n" +
                        open(os.path.join("CHANGES.txt")).read(),
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
+      # Get more strings from https://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Plone",
         "Programming Language :: Python",
@@ -18,7 +18,7 @@ setup(name='slc.treecategories',
       keywords='dynatree, jqueryui',
       author='Patrick Gerken',
       author_email='gerken@syslab.com',
-      url='http://www.syslab.com',
+      url='https://www.syslab.com',
       license='GPL',
       packages=find_packages('src'),
       package_dir={'' : 'src'},
